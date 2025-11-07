@@ -1,0 +1,86 @@
+@charset "utf-8";
+/* CSS Document */
+
+body{ width:100% margin:0px; background:url(images/bg_img.jpg) no-repeat;}
+
+.style1{ font-family:Trebuchet MS, Arial, Helvetica, sans-serif; color:#FFF; font-size:16px; font-weight:bold;}
+.style1_small{ 
+font-family:Trebuchet MS, Arial, Helvetica, sans-serif;
+font-size:11px;
+text-decoration:none;
+}
+
+.border_style1{ border:thin solid #dadada; background:#f8f7f7;}
+
+.border_style1_1{ border:thin solid #B2B2B2; background:#f8f7f7;}
+
+.border_style2{ border:thin solid #dadada; background:#FFF;}
+
+.style2{ font-family:Trebuchet MS, Arial, Helvetica, sans-serif; color:#15a3f9; font-size:16px; font-weight:bold; text-decoration:none;}
+
+.blue_text{
+	font-family:Trebuchet MS, Arial, Helvetica, sans-serif;
+	font-size:14px;
+	font-weight:bold;
+	color:#0f499b;
+	padding-left: 15px;
+}
+.blue_text_no_padding{
+	font-family:Trebuchet MS, Arial, Helvetica, sans-serif;
+	font-size:14px;
+	font-weight:bold;
+	color:#0f499b;
+}
+.black_text_no_padding_13px{
+	font-family:Trebuchet MS, Arial, Helvetica, sans-serif;
+	font-size:12px;
+	color:#000000;
+}
+.black_text_no_padding_normal{
+	font-family:Trebuchet MS, Arial, Helvetica, sans-serif;
+	font-size:12px;
+	color:#000000;
+}
+.black_text_no_padding_small{
+	font-family:Trebuchet MS, Arial, Helvetica, sans-serif;
+	font-size:10px;
+	color:#000000;
+}
+.border_bottom_style{ border-bottom:thin solid #dadada;}
+
+#nationality_box{ width:85px; height:15px; float:left; margin-left:25px; margin-top:-30px; background:#FFF; text-align:center;}
+
+#category_box{ width:73px; height:15px; margin-top:-30px; background:#FFF; float:left; text-align:center; margin-left:25px;}
+
+.blue_text_normal{font-family:Trebuchet MS, Arial, Helvetica, sans-serif;
+	font-size:12px;
+	font-weight:bold;
+	color:#15a3f9;
+	padding-left: 15px;
+	
+}
+
+.footer_text{font-family:Trebuchet MS, Arial, Helvetica, sans-serif;
+	font-size:12px;
+	font-weight:normal;
+	color:#FFF;
+	padding-left:15px;
+	padding-bottom:20px;
+	 text-shadow: 0px 2px 3px #000;
+}
+.footer_text_1{
+	font-family:Trebuchet MS, Arial, Helvetica, sans-serif;
+	font-size:12px;
+	font-weight:normal;
+	color:#FFF;		
+	padding-bottom:05px;
+	text-shadow: 0px 2px 3px #000;
+}
+.submit_text{font-family:Trebuchet MS, Arial, Helvetica, sans-serif;
+	font-size:12px;
+	font-weight:bold;
+	color:#15a3f9;
+	
+	position:absolute;
+	z-index:1;
+}

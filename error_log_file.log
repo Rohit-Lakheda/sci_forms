@@ -1,0 +1,5 @@
+[2024-09-20 05:20:44] Error: [8] Undefined variable: undefinedVariable in /home/websites/bengalurutechsummit.com/www/web/it_forms/error_log.php on line 23
+[2024-09-20 05:20:44] Error: [2] date(): It is not safe to rely on the system's timezone settings. You are *required* to use the date.timezone setting or the date_default_timezone_set() function. In case you used any of those methods and you are still getting this warning, you most likely misspelled the timezone identifier. We selected the timezone 'UTC' for now, but please set date.timezone to select your timezone. in /home/websites/bengalurutechsummit.com/www/web/it_forms/error_log.php on line 27
+[2024-09-20 05:20:44] Exception: A test exception
+[2024-09-20 05:20:44] Error: [2] file_get_contents(non_existent_file.txt): failed to open stream: No such file or directory in /home/websites/bengalurutechsummit.com/www/web/it_forms/error_log.php on line 31
+You messed up!

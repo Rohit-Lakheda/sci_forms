@@ -1,0 +1,64 @@
+[05-Jul-2024 14:24:45 Asia/Kolkata] PHP Deprecated:  mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 26
+[05-Jul-2024 14:32:03 Asia/Kolkata] PHP Deprecated:  mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 26
+[05-Jul-2024 14:32:07 Asia/Kolkata] PHP Deprecated:  mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 26
+[17-Jul-2024 17:59:19 Asia/Kolkata] PHP Deprecated:  mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 26
+[17-Jul-2024 18:00:08 Asia/Kolkata] PHP Deprecated:  mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 26
+[20-Jul-2024 09:27:54 Asia/Kolkata] PHP Deprecated:  mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 26
+[20-Jul-2024 09:34:42 Asia/Kolkata] PHP Deprecated:  mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 26
+[20-Jul-2024 09:52:53 Asia/Kolkata] PHP Deprecated:  mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 26
+[20-Jul-2024 11:38:53 Asia/Kolkata] PHP Deprecated:  mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 26
+[21-Jul-2024 15:39:35 Asia/Kolkata] PHP Deprecated:  mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 26
+[11-Sep-2024 07:39:01 UTC] PHP Deprecated:  mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 26
+[11-Sep-2024 07:39:01 UTC] PHP Warning:  mysql_connect(): Connection refused in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 26
+[11-Sep-2024 07:40:11 UTC] PHP Deprecated:  mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 26
+[11-Sep-2024 07:40:12 UTC] PHP Warning:  mysql_connect(): Connection refused in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 26
+[11-Sep-2024 07:40:12 UTC] PHP Warning:  mysqli_error() expects parameter 1 to be mysqli, boolean given in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 28
+[11-Sep-2024 07:40:24 UTC] PHP Deprecated:  mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 26
+[11-Sep-2024 07:40:25 UTC] PHP Warning:  mysql_connect(): Connection refused in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 26
+[11-Sep-2024 07:40:25 UTC] PHP Warning:  mysqli_error() expects parameter 1 to be mysqli, boolean given in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 28
+[11-Sep-2024 07:40:25 UTC] PHP Warning:  mysql_select_db() expects parameter 2 to be resource, boolean given in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 32
+[11-Sep-2024 09:15:02 UTC] PHP Deprecated:  mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 26
+[11-Sep-2024 09:15:02 UTC] PHP Warning:  mysql_connect(): Connection refused in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 26
+[11-Sep-2024 09:15:02 UTC] PHP Warning:  mysqli_error() expects parameter 1 to be mysqli, boolean given in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 28
+[11-Sep-2024 09:15:02 UTC] PHP Warning:  mysql_select_db() expects parameter 2 to be resource, boolean given in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 32
+[13-Sep-2024 08:03:24 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 23
+[13-Sep-2024 08:05:13 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 10
+[13-Sep-2024 08:15:31 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 10
+[13-Sep-2024 08:16:49 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 11
+[13-Sep-2024 08:17:34 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 11
+[13-Sep-2024 08:17:52 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 11
+[13-Sep-2024 08:20:39 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 11
+[13-Sep-2024 09:39:59 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 11
+[13-Sep-2024 10:02:12 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 11
+[13-Sep-2024 10:02:15 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 11
+[13-Sep-2024 10:02:17 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 11
+[13-Sep-2024 10:11:21 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 11
+[13-Sep-2024 10:21:27 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 11
+[13-Sep-2024 10:45:37 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 11
+[13-Sep-2024 12:25:57 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 11
+[13-Sep-2024 12:41:42 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 23
+[13-Sep-2024 12:44:32 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 23
+[13-Sep-2024 12:53:52 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 11
+[16-Sep-2024 10:02:30 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 23
+[16-Sep-2024 10:29:36 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 23
+[16-Sep-2024 11:01:20 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 23
+[16-Sep-2024 11:28:17 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 23
+[16-Sep-2024 11:29:36 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 23
+[16-Sep-2024 11:30:05 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 11
+[16-Sep-2024 11:30:49 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 11
+[16-Sep-2024 11:31:51 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 11
+[16-Sep-2024 12:28:51 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 11
+[16-Sep-2024 17:30:02 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 11
+[16-Sep-2024 17:30:06 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 11
+[16-Sep-2024 17:30:09 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 11
+[18-Sep-2024 05:27:44 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 23
+[18-Sep-2024 06:15:03 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 23
+[18-Sep-2024 06:29:07 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection timed out in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 19
+[18-Sep-2024 06:29:10 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection timed out in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 19
+[18-Sep-2024 06:32:59 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection timed out in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 19
+[18-Sep-2024 06:50:10 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/dbcon_open.php on line 23
+[18-Sep-2024 06:57:29 UTC] PHP Warning:  file_get_contents(http://localhost/api.php): failed to open stream: HTTP request failed! HTTP/1.1 404 Not Found
+ in /home/wooupplp/public_html/pay/tie-2024/db-api.php on line 21
+[18-Sep-2024 07:53:52 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 20
+[18-Sep-2024 07:56:47 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 41
+[18-Sep-2024 07:56:58 UTC] PHP Warning:  mysqli::mysqli(): (HY000/2002): Connection refused in /home/wooupplp/public_html/pay/tie-2024/db_connect.php on line 41
