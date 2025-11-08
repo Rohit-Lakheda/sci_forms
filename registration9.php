@@ -268,7 +268,53 @@ session_destroy();
                                 <?php if (!empty($qr_gt_user_data_ans_row['time_slot'])) { ?>
                                 <tr>
                                   <td width="50%"> <strong>Time Slot</strong> </td>
-                                  <td width="50%"> <?php echo $qr_gt_user_data_ans_row['time_slot']; ?> </td>
+                                  <td width="50%"> 
+                                    <?php 
+                                    $time_slot = $qr_gt_user_data_ans_row['time_slot'];
+                                    
+                                    // Decode HTML entities first (in case JSON was HTML-encoded)
+                                    $time_slot = html_entity_decode($time_slot, ENT_QUOTES, 'UTF-8');
+                                    
+                                    // Try to decode as JSON
+                                    $time_slot_decoded = json_decode($time_slot, true);
+                                    
+                                    if (json_last_error() === JSON_ERROR_NONE && is_array($time_slot_decoded)) {
+                                        // Format JSON data in user-friendly way
+                                        echo '<div style="max-height: 300px; overflow-y: auto;">';
+                                        
+                                        // Day mapping for better display
+                                        $day_names = array(
+                                            'Day1' => 'Day 1 - Tuesday, 9th December 2025',
+                                            'Day2' => 'Day 2 - Wednesday, 10th December 2025',
+                                            'Day3' => 'Day 3 - Thursday, 11th December 2025',
+                                            'Day4' => 'Day 4 - Friday, 12th December 2025'
+                                        );
+                                        
+                                        foreach ($time_slot_decoded as $day => $slots) {
+                                            $day_display = isset($day_names[$day]) ? $day_names[$day] : $day;
+                                            echo '<div style="margin-bottom: 20px; padding: 10px; background-color: #f9f9f9; border-left: 4px solid #2fa0dd;">';
+                                            echo '<strong style="color: #2fa0dd; font-size: 15px; display: block; margin-bottom: 8px;">' . htmlspecialchars($day_display) . '</strong>';
+                                            echo '<ul style="margin: 0; padding-left: 20px; list-style-type: disc;">';
+                                            foreach ($slots as $slot) {
+                                                $time = isset($slot['time']) ? htmlspecialchars($slot['time']) : '';
+                                                $label = isset($slot['label']) ? htmlspecialchars($slot['label']) : '';
+                                                echo '<li style="margin: 5px 0; line-height: 1.6;">';
+                                                if ($time) {
+                                                    echo '<span style="color: #666; font-weight: 600;">' . $time . '</span> - ';
+                                                }
+                                                echo '<span style="color: #333;">' . $label . '</span>';
+                                                echo '</li>';
+                                            }
+                                            echo '</ul>';
+                                            echo '</div>';
+                                        }
+                                        echo '</div>';
+                                    } else {
+                                        // Not JSON, display as is (but still decode HTML entities)
+                                        echo '<div style="white-space: pre-wrap; word-wrap: break-word;">' . htmlspecialchars($time_slot) . '</div>';
+                                    }
+                                    ?>
+                                  </td>
                                 </tr>
                                 <?php } ?>
 

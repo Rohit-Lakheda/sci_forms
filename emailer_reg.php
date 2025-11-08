@@ -477,13 +477,58 @@ $mail_body = $mail_body."
           </tr>";
           }
           if(!empty($res['time_slot'])) {
+    // Format time slot JSON for display
+    $time_slot = $res['time_slot'];
+    
+    // Decode HTML entities first (in case JSON was HTML-encoded)
+    $time_slot = html_entity_decode($time_slot, ENT_QUOTES, 'UTF-8');
+    
+    // Try to decode as JSON
+    $time_slot_decoded = json_decode($time_slot, true);
+    
+    $time_slot_display = '';
+    
+    if (json_last_error() === JSON_ERROR_NONE && is_array($time_slot_decoded)) {
+        // Day mapping for better display
+        $day_names = array(
+            'Day1' => 'Day 1 - Tuesday, 9th December 2025',
+            'Day2' => 'Day 2 - Wednesday, 10th December 2025',
+            'Day3' => 'Day 3 - Thursday, 11th December 2025',
+            'Day4' => 'Day 4 - Friday, 12th December 2025'
+        );
+        
+        $time_slot_display = "<div style='max-height: 300px; overflow-y: auto;'>";
+        foreach ($time_slot_decoded as $day => $slots) {
+            $day_display = isset($day_names[$day]) ? $day_names[$day] : $day;
+            $time_slot_display .= "<div style='margin-bottom: 15px; padding: 8px; background-color: #f9f9f9; border-left: 3px solid #2fa0dd;'>";
+            $time_slot_display .= "<strong style='color: #2fa0dd; font-size: 12px; display: block; margin-bottom: 5px;'>" . htmlspecialchars($day_display) . "</strong>";
+            $time_slot_display .= "<ul style='margin: 0; padding-left: 20px; list-style-type: disc;'>";
+            foreach ($slots as $slot) {
+                $time = isset($slot['time']) ? htmlspecialchars($slot['time']) : '';
+                $label = isset($slot['label']) ? htmlspecialchars($slot['label']) : '';
+                $time_slot_display .= "<li style='margin: 3px 0; line-height: 1.5;'>";
+                if ($time) {
+                    $time_slot_display .= "<span style='color: #666; font-weight: 600;'>" . $time . "</span> - ";
+                }
+                $time_slot_display .= "<span style='color: #333;'>" . $label . "</span>";
+                $time_slot_display .= "</li>";
+            }
+            $time_slot_display .= "</ul>";
+            $time_slot_display .= "</div>";
+        }
+        $time_slot_display .= "</div>";
+    } else {
+        // Not JSON, display as is (but still decode HTML entities)
+        $time_slot_display = htmlspecialchars($time_slot);
+    }
+    
     $mail_body = $mail_body." <tr bgcolor='#FFFFFF'>
 
-            <td height='22' align='left' valign='middle' bgcolor='#F9F8F2'  style='font-size: 11px; font-family: Verdana, Arial, Helvetica, sans-serif;'>&nbsp;Time Slot</td>
+            <td height='22' align='left' valign='top' bgcolor='#F9F8F2'  style='font-size: 11px; font-family: Verdana, Arial, Helvetica, sans-serif;'>&nbsp;Time Slot</td>
 
-            <td height='22' align='center' valign='middle' bgcolor='#F9F8F2'  style='font-size: 11px; font-family: Verdana, Arial, Helvetica, sans-serif;'>:</td>
+            <td height='22' align='center' valign='top' bgcolor='#F9F8F2'  style='font-size: 11px; font-family: Verdana, Arial, Helvetica, sans-serif;'>:</td>
 
-            <td width='75%' height='22' align='left' valign='middle' bgcolor='#F9F8F2'  style='font-size: 11px; font-family: Verdana, Arial, Helvetica, sans-serif;'>&nbsp;".$res['time_slot']."</td>
+            <td width='75%' align='left' valign='top' bgcolor='#F9F8F2'  style='font-size: 11px; font-family: Verdana, Arial, Helvetica, sans-serif; padding: 8px;'>&nbsp;".$time_slot_display."</td>
           </tr>";
 }
 if(!empty($res['course'])) {

@@ -781,18 +781,67 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                         document.addEventListener('DOMContentLoaded', function() {
                                             const passTypeDropdown = document.getElementById('pass_type');
                                             const exhibitionDayGroup = document.getElementById('exhibition_day_group');
-                                            exhibitionDayGroup.style.display = 'none'; // Hide on load
+                                            const ieeeSection = document.getElementById('del_type');
+                                            const ieeeNumberGroup = document.getElementById('ieee_number_group');
                                             
-                                            passTypeDropdown.addEventListener('change', function() {
-                                                if (this.value === 'exhibition' || this.value === 'workshop') {
-                                                    exhibitionDayGroup.style.display = 'block';
-                                                    document.getElementById('exhibition_day').required = true;
-                                                } else {
-                                                    exhibitionDayGroup.style.display = 'none';
-                                                    document.getElementById('exhibition_day').value = ''; // Reset selection
-                                                    document.getElementById('exhibition_day').required = false;
+                                            if (exhibitionDayGroup) {
+                                                exhibitionDayGroup.style.display = 'none'; // Hide on load
+                                            }
+                                            
+                                            // Function to toggle IEEE section visibility
+                                            function toggleIEEESection() {
+                                                if (ieeeSection) {
+                                                    // If pass_type dropdown exists and is set to 'workshop', hide IEEE section
+                                                    if (passTypeDropdown && passTypeDropdown.value === 'workshop') {
+                                                        // Hide IEEE section for 2-Day Delegate Pass
+                                                        ieeeSection.style.display = 'none';
+                                                        if (ieeeNumberGroup) {
+                                                            ieeeNumberGroup.style.display = 'none';
+                                                        }
+                                                        // Reset IEEE values
+                                                        const yesRadio = document.getElementById('yes1');
+                                                        const noRadio = document.getElementById('no1');
+                                                        if (noRadio) noRadio.checked = true;
+                                                        if (yesRadio) yesRadio.checked = false;
+                                                        const ieeeNumberInput = document.getElementById('ieee_member_number');
+                                                        if (ieeeNumberInput) {
+                                                            ieeeNumberInput.value = '';
+                                                            ieeeNumberInput.required = false;
+                                                        }
+                                                    } else {
+                                                        // Show IEEE section for other pass types or when pass_type doesn't exist
+                                                        ieeeSection.style.display = 'block';
+                                                    }
                                                 }
-                                            });
+                                            }
+                                            
+                                            // Initialize IEEE section visibility on page load
+                                            toggleIEEESection();
+                                            
+                                            // Only add event listener if pass_type dropdown exists
+                                            if (passTypeDropdown) {
+                                                passTypeDropdown.addEventListener('change', function() {
+                                                    if (exhibitionDayGroup) {
+                                                        if (this.value === 'exhibition' || this.value === 'workshop') {
+                                                            exhibitionDayGroup.style.display = 'block';
+                                                            const exhibitionDay = document.getElementById('exhibition_day');
+                                                            if (exhibitionDay) {
+                                                                exhibitionDay.required = true;
+                                                            }
+                                                        } else {
+                                                            exhibitionDayGroup.style.display = 'none';
+                                                            const exhibitionDay = document.getElementById('exhibition_day');
+                                                            if (exhibitionDay) {
+                                                                exhibitionDay.value = ''; // Reset selection
+                                                                exhibitionDay.required = false;
+                                                            }
+                                                        }
+                                                    }
+                                                    
+                                                    // Toggle IEEE section based on pass type
+                                                    toggleIEEESection();
+                                                });
+                                            }
                                         });
                                     </script>
 
@@ -941,6 +990,32 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                 // Reset styling for non-exhibition passes
                                                 exhibitionDayDropdown.style.backgroundColor = '';
                                             }
+                                            
+                                            // Toggle IEEE section visibility based on pass type
+                                            const ieeeSection = document.getElementById('del_type');
+                                            const ieeeNumberGroup = document.getElementById('ieee_number_group');
+                                            if (ieeeSection) {
+                                                if (passType === 'workshop') {
+                                                    // Hide IEEE section for 2-Day Delegate Pass
+                                                    ieeeSection.style.display = 'none';
+                                                    if (ieeeNumberGroup) {
+                                                        ieeeNumberGroup.style.display = 'none';
+                                                    }
+                                                    // Reset IEEE values
+                                                    const yesRadio = document.getElementById('yes1');
+                                                    const noRadio = document.getElementById('no1');
+                                                    if (noRadio) noRadio.checked = true;
+                                                    if (yesRadio) yesRadio.checked = false;
+                                                    const ieeeNumberInput = document.getElementById('ieee_member_number');
+                                                    if (ieeeNumberInput) {
+                                                        ieeeNumberInput.value = '';
+                                                        ieeeNumberInput.required = false;
+                                                    }
+                                                } else {
+                                                    // Show IEEE section for other pass types
+                                                    ieeeSection.style.display = 'block';
+                                                }
+                                            }
                                         }
                                         
                                         if (passTypeDropdown) {
@@ -987,395 +1062,39 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
 
                                     <div class="form-group" id="pass_time_slot_group" style="display:none;">
                                         <label class="col-md-3 control-label">Select Time Slots <span class="dips-required">*</span><br>
-                                            <small style="font-size: 12px; font-weight: normal;">Select one from each day (Maximum 2 slots)</small>
+                                            <small style="font-size: 12px; font-weight: normal;">Select one option per time slot row (only Tutorials and Workshops are selectable)</small>
                                         </label>
-                                        <div class="col-md-6">
-                                            <!-- Container for Day 1 checkboxes -->
-                                            <div id="day1_slots_container" style="display:none; margin-bottom: 15px;">
-                                                <strong style="font-size: 14px; color: #333;">Day 1 Options:</strong>
-                                                <div id="day1_checkboxes" style="max-height: 200px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; margin-top: 5px; border-radius: 4px;"></div>
+                                        <div class="col-md-9">
+                                            <div id="time_slot_tables_container" style="overflow-x: auto;">
+                                                <!-- Time slot tables will be dynamically generated here -->
                                             </div>
                                             
-                                            <!-- Container for Day 2 checkboxes -->
-                                            <div id="day2_slots_container" style="display:none; margin-bottom: 15px;">
-                                                <strong style="font-size: 14px; color: #333;">Day 2 Options:</strong>
-                                                <div id="day2_checkboxes" style="max-height: 200px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; margin-top: 5px; border-radius: 4px;"></div>
-                                            </div>
-                                            
-                                            <!-- Container for Day 3 checkboxes -->
-                                            <div id="day3_slots_container" style="display:none; margin-bottom: 15px;">
-                                                <strong style="font-size: 14px; color: #333;">Day 3 Options:</strong>
-                                                <div id="day3_checkboxes" style="max-height: 200px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; margin-top: 5px; border-radius: 4px;"></div>
-                                            </div>
-                                            
-                                            <!-- Container for Day 4 checkboxes -->
-                                            <div id="day4_slots_container" style="display:none; margin-bottom: 15px;">
-                                                <strong style="font-size: 14px; color: #333;">Day 4 Options:</strong>
-                                                <div id="day4_checkboxes" style="max-height: 200px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; margin-top: 5px; border-radius: 4px;"></div>
-                                            </div>
-                                            
-                                            <!-- Fallback dropdown for non-workshop pass types -->
-                                            <select class="form-control" id="pass_time_slot" style="display:none;">
-                                                <option value="">-- Select Day First --</option>
-                                            </select>
-
-                                            <!-- Hidden input submitted to server with comma-separated selected slots -->
+                                            <!-- Hidden input to store JSON data -->
                                             <input type="hidden" name="time_slot" id="time_slot_hidden" value="">
                                             
                                             <!-- Error message for validation -->
                                             <div id="time_slot_error" style="color: red; display: none; font-size: 12px; margin-top: 5px;">
-                                                Please select exactly 2 time slots (one from each day).
+                                                Please select at least one time slot from each selected day.
                                             </div>
                                         </div>
                                     </div>
 
-                                    <script>
-                                    document.addEventListener('DOMContentLoaded', function() {
-                                        const exhibitionDayDropdown = document.getElementById('exhibition_day');
-                                        const passTimeSlotSelect = document.getElementById('pass_time_slot');
-                                        const timeSlotHidden = document.getElementById('time_slot_hidden');
-                                        const passTypeDropdown = document.getElementById('pass_type');
-
-                                        if (!exhibitionDayDropdown) return;
-
-                                        // Function to get selected checkboxes count
-                                        function getSelectedCheckboxesCount() {
-                                            const checkboxes = document.querySelectorAll('input[name="time_slot_checkbox"]:checked');
-                                            return checkboxes.length;
-                                        }
-
-                                        // Function to update hidden input with selected slots
-                                        function updateHiddenInput() {
-                                            const checkboxes = document.querySelectorAll('input[name="time_slot_checkbox"]:checked');
-                                            const selectedValues = Array.from(checkboxes).map(cb => cb.value);
-                                            const joinedValue = selectedValues.join(',');
-                                            
-                                            if (timeSlotHidden) {
-                                                timeSlotHidden.value = joinedValue;
-                                                console.log('updateHiddenInput called - Selected values:', selectedValues, 'Joined:', joinedValue);
-                                            } else {
-                                                console.error('timeSlotHidden element not found!');
-                                            }
-                                            
-                                            // Hide error message if valid
-                                            const errorDiv = document.getElementById('time_slot_error');
-                                            if (errorDiv) {
-                                                errorDiv.style.display = 'none';
-                                            }
-                                        }
-
-                                        // Function to create checkbox element
-                                        function createCheckbox(value, label, dayNumber) {
-                                            const checkboxId = `time_slot_${value.replace(/[^a-zA-Z0-9]/g, '_')}`;
-                                            const checkbox = document.createElement('input');
-                                            checkbox.type = 'checkbox';
-                                            checkbox.name = 'time_slot_checkbox';
-                                            checkbox.id = checkboxId;
-                                            checkbox.value = value;
-                                            checkbox.style.marginRight = '5px';
-                                            
-                                            checkbox.addEventListener('change', function() {
-                                                // Get checkboxes for the same day
-                                                const dayCheckboxes = document.querySelectorAll(`#day${dayNumber}_checkboxes input[type="checkbox"]`);
-                                                
-                                                // If more than 1 selected in same day, uncheck the previous one first
-                                                if (this.checked) {
-                                                    const daySelectedCount = Array.from(dayCheckboxes).filter(cb => cb.checked).length;
-                                                    if (daySelectedCount > 1) {
-                                                        Array.from(dayCheckboxes).forEach(cb => {
-                                                            if (cb !== this && cb.checked) {
-                                                                cb.checked = false;
-                                                            }
-                                                        });
-                                                    }
-                                                }
-                                                
-                                                // Get updated count after same-day deselection
-                                                const selectedCount = getSelectedCheckboxesCount();
-                                                
-                                                // If max 2 selected, disable other checkboxes
-                                                if (selectedCount >= 2) {
-                                                    document.querySelectorAll('input[name="time_slot_checkbox"]:not(:checked)').forEach(cb => {
-                                                        cb.disabled = true;
-                                                    });
-                                                } else {
-                                                    // Re-enable all checkboxes
-                                                    document.querySelectorAll('input[name="time_slot_checkbox"]').forEach(cb => {
-                                                        cb.disabled = false;
-                                                    });
-                                                }
-                                                
-                                                updateHiddenInput();
-                                            });
-                                            
-                                            const labelElement = document.createElement('label');
-                                            labelElement.htmlFor = checkboxId;
-                                            labelElement.style.display = 'block';
-                                            labelElement.style.marginBottom = '5px';
-                                            labelElement.style.fontSize = '13px';
-                                            labelElement.appendChild(checkbox);
-                                            labelElement.appendChild(document.createTextNode(' ' + label));
-                                            
-                                            return labelElement;
-                                        }
-
-                                        // Function to populate checkboxes for a day
-                                        function populateDayCheckboxes(dayNumber, slots, containerId) {
-                                            const container = document.getElementById(containerId);
-                                            const slotsContainer = document.getElementById(`day${dayNumber}_checkboxes`);
-                                            
-                                            if (!container || !slotsContainer) return;
-                                            
-                                            // Clear existing checkboxes
-                                            slotsContainer.innerHTML = '';
-                                            
-                                            // Create checkboxes for each slot
-                                            slots.forEach(slot => {
-                                                const checkboxLabel = createCheckbox(slot.value, slot.label, dayNumber);
-                                                slotsContainer.appendChild(checkboxLabel);
-                                            });
-                                            
-                                            // Show container
-                                            container.style.display = 'block';
-                                        }
-
-                                        // Function to hide all day containers
-                                        function hideAllDayContainers() {
-                                            for (let i = 1; i <= 4; i++) {
-                                                const container = document.getElementById(`day${i}_slots_container`);
-                                                if (container) container.style.display = 'none';
-                                            }
-                                        }
-
-                                        exhibitionDayDropdown.addEventListener('change', function() {
-                                            const selectedDay = this.value;
-                                            const passType = passTypeDropdown ? passTypeDropdown.value : '';
-                                            
-                                            // Clear previous selections
-                                            timeSlotHidden.value = '';
-                                            hideAllDayContainers();
-                                            passTimeSlotSelect.style.display = 'none';
-                                            
-                                            // Handle 2-Day Delegate Pass combinations with checkboxes
-                                            if (passType === 'workshop' && selectedDay && selectedDay.includes(',')) {
-                                                const passTimeSlotGroup = document.getElementById('pass_time_slot_group');
-                                                if (passTimeSlotGroup) {
-                                                    passTimeSlotGroup.style.display = 'block';
-                                                }
-                                                
-                                                // Remove required from time_slot select and ensure hidden input is used
-                                                const timeSlotSelect = document.getElementById('time_slot');
-                                                if (timeSlotSelect) {
-                                                    timeSlotSelect.removeAttribute('required');
-                                                    timeSlotSelect.style.display = 'none';
-                                                }
-                                                
-                                                // Ensure hidden input is set (will be validated in form submit)
-                                                if (timeSlotHidden) {
-                                                    timeSlotHidden.setAttribute('data-required', 'true');
-                                                }
-                                                
-                                                // Parse the selected days
-                                                const days = selectedDay.split(',');
-                                                
-                                                if (selectedDay === 'Day1,Day2') {
-                                                    // Day 1 slots
-                                                    const day1Slots = [];
-                                                    for (let t = 1; t <= 6; t++) {
-                                                        for (let w = 1; w <= 10; w++) {
-                                                            day1Slots.push({
-                                                                value: `Day1 - First half - Tutorial${t} + Workshop${w}`,
-                                                                label: `First half - Tutorial${t} + Workshop${w}`
-                                                            });
-                                                        }
-                                                    }
-                                                    for (let t = 7; t <= 10; t++) {
-                                                        for (let w = 4; w <= 10; w++) {
-                                                            day1Slots.push({
-                                                                value: `Day1 - Second half - Tutorial${t} + Workshop${w}`,
-                                                                label: `Second half - Tutorial${t} + Workshop${w}`
-                                                            });
-                                                        }
-                                                    }
-                                                    populateDayCheckboxes(1, day1Slots, 'day1_slots_container');
-                                                    
-                                                    // Day 2 slots
-                                                    const day2Slots = [];
-                                                    for (let t = 11; t <= 18; t++) {
-                                                        for (let w = 11; w <= 22; w++) {
-                                                            day2Slots.push({
-                                                                value: `Day2 - Second half - Tutorial${t} + Workshop${w}`,
-                                                                label: `Second half - Tutorial${t} + Workshop${w}`
-                                                            });
-                                                        }
-                                                    }
-                                                    populateDayCheckboxes(2, day2Slots, 'day2_slots_container');
-                                                    
-                                                } else if (selectedDay === 'Day2,Day3') {
-                                                    // Day 2 slots
-                                                    const day2Slots = [];
-                                                    for (let t = 11; t <= 18; t++) {
-                                                        for (let w = 11; w <= 22; w++) {
-                                                            day2Slots.push({
-                                                                value: `Day2 - Second half - Tutorial${t} + Workshop${w}`,
-                                                                label: `Second half - Tutorial${t} + Workshop${w}`
-                                                            });
-                                                        }
-                                                    }
-                                                    populateDayCheckboxes(2, day2Slots, 'day2_slots_container');
-                                                    
-                                                    // Day 3 slots
-                                                    const day3Slots = [];
-                                                    for (let t = 11; t <= 18; t++) {
-                                                        for (let w = 11; w <= 22; w++) {
-                                                            day3Slots.push({
-                                                                value: `Day3 - Second half - Tutorial${t} + Workshop${w}`,
-                                                                label: `Second half - Tutorial${t} + Workshop${w}`
-                                                            });
-                                                        }
-                                                    }
-                                                    populateDayCheckboxes(3, day3Slots, 'day3_slots_container');
-                                                    
-                                                } else if (selectedDay === 'Day3,Day4') {
-                                                    // Day 3 slots
-                                                    const day3Slots = [];
-                                                    for (let t = 11; t <= 18; t++) {
-                                                        for (let w = 11; w <= 22; w++) {
-                                                            day3Slots.push({
-                                                                value: `Day3 - Second half - Tutorial${t} + Workshop${w}`,
-                                                                label: `Second half - Tutorial${t} + Workshop${w}`
-                                                            });
-                                                        }
-                                                    }
-                                                    populateDayCheckboxes(3, day3Slots, 'day3_slots_container');
-                                                    
-                                                    // Day 4 slots
-                                                    const day4Slots = [];
-                                                    for (let t = 11; t <= 18; t++) {
-                                                        for (let w = 11; w <= 22; w++) {
-                                                            day4Slots.push({
-                                                                value: `Day4 - Second half - Tutorial${t} + Workshop${w}`,
-                                                                label: `Second half - Tutorial${t} + Workshop${w}`
-                                                            });
-                                                        }
-                                                    }
-                                                    populateDayCheckboxes(4, day4Slots, 'day4_slots_container');
-                                                }
-                                            } else {
-                                                // For non-workshop pass types, use dropdown
-                                                passTimeSlotSelect.style.display = 'block';
-                                            passTimeSlotSelect.innerHTML = '<option value="">-- Select Time Slot --</option>';
-
-                                            if (selectedDay === 'Day1') {
-                                                    // DAY 1 OPTIONS (for other pass types)
-                                                for (let t = 1; t <= 6; t++) {
-                                                    for (let w = 1; w <= 10; w++) {
-                                                        passTimeSlotSelect.innerHTML += `<option value="First half - Tutorial${t} + Workshop${w}">First half - Tutorial${t} + Workshop${w}</option>`;
-                                                    }
-                                                }
-                                                for (let t = 7; t <= 10; t++) {
-                                                    for (let w = 4; w <= 10; w++) {
-                                                        passTimeSlotSelect.innerHTML += `<option value="Second half - Tutorial${t} + Workshop${w}">Second half - Tutorial${t} + Workshop${w}</option>`;
-                                                    }
-                                                }
-                                                for (let t = 1; t <= 6; t++) {
-                                                    for (let w = 4; w <= 10; w++) {
-                                                        passTimeSlotSelect.innerHTML += `<option value="First half Tutorial${t} - Second half Workshop${w}">First half Tutorial${t} - Second half Workshop${w}</option>`;
-                                                    }
-                                                }
-                                                for (let w = 1; w <= 10; w++) {
-                                                    for (let t = 7; t <= 10; t++) {
-                                                        passTimeSlotSelect.innerHTML += `<option value="First half Workshop${w} - Second half Tutorial${t}">First half Workshop${w} - Second half Tutorial${t}</option>`;
-                                                    }
-                                                }
-                                            } else if (selectedDay === 'Day2') {
-                                                for (let t = 11; t <= 18; t++) {
-                                                    for (let w = 11; w <= 22; w++) {
-                                                        passTimeSlotSelect.innerHTML += `<option value="Second half - Tutorial${t} + Workshop${w}">Second half - Tutorial${t} + Workshop${w}</option>`;
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        });
-
-                                        // Sync hidden input for dropdown (non-workshop)
-                                        if (passTimeSlotSelect) {
-                                        passTimeSlotSelect.addEventListener('change', function() {
-                                            timeSlotHidden.value = this.value;
-                                        });
-                                        }
-
-                                        // Form validation for workshop pass type
-                                        const form = document.querySelector('form');
-                                        if (form) {
-                                            form.addEventListener('submit', function(e) {
-                                                const passType = passTypeDropdown ? passTypeDropdown.value : '';
-                                                
-                                                // Ensure pass_time_slot is not required for workshop passes
-                                                if (passType === 'workshop') {
-                                                    const passTimeSlotSelect = document.getElementById('pass_time_slot');
-                                                    if (passTimeSlotSelect) {
-                                                        passTimeSlotSelect.removeAttribute('required');
-                                                        passTimeSlotSelect.value = ''; // Clear value to avoid validation
-                                                    }
-                                                    const timeSlotSelect = document.getElementById('time_slot');
-                                                    if (timeSlotSelect) {
-                                                        timeSlotSelect.removeAttribute('required');
-                                                    }
-                                                    
-                                                    // Update hidden input before validation
-                                                    updateHiddenInput();
-                                                    
-                                                    const selectedCount = getSelectedCheckboxesCount();
-                                                    const timeSlotValue = timeSlotHidden ? timeSlotHidden.value : '';
-                                                    
-                                                    // Debug logging
-                                                    console.log('Form submission - Workshop Pass:');
-                                                    console.log('Selected count:', selectedCount);
-                                                    console.log('Time slot value:', timeSlotValue);
-                                                    console.log('Time slot hidden input:', timeSlotHidden);
-                                                    
-                                                    if (selectedCount !== 2 || !timeSlotValue || timeSlotValue.trim() === '') {
-                                                        e.preventDefault();
-                                                        const errorDiv = document.getElementById('time_slot_error');
-                                                        if (errorDiv) {
-                                                            errorDiv.style.display = 'block';
-                                                        }
-                                                        alert('Please select exactly 2 time slots (one from each day).\n\nSelected: ' + selectedCount + ' slot(s)\nTime slot value: ' + (timeSlotValue || 'empty'));
-                                                        return false;
-                                                    }
-                                                    
-                                                    // Verify that time slots are comma-separated
-                                                    const slots = timeSlotValue.split(',');
-                                                    if (slots.length !== 2) {
-                                                        e.preventDefault();
-                                                        alert('Please select exactly 2 time slots. Currently selected: ' + slots.length);
-                                                        return false;
-                                                    }
-                                                    
-                                                    console.log('Validation passed. Time slots:', slots);
-                                                }
-                                            });
-                                        }
-                                    });
-                                    </script>
-
-                                    <!-- Food and Kit Options -->
-                                    <div class="form-group" id="food_kit_group">
+                                    <!-- Food and Kit Options - Only for 2-Day Delegate Pass -->
+                                    <div class="form-group" id="food_kit_group" style="display:none;">
                                         <label class="col-md-3 control-label">Additional Options</label>
                                         <div class="col-md-6">
                                             <div class="checkbox" style="margin-bottom: 10px;">
                                                 <label>
                                                     <input type="checkbox" id="food_checkbox" value="Yes" 
                                                            onchange="updateFoodKitValues()">
-                                                    Food - ₹2,000
+                                                    Food
                                                 </label>
                                             </div>
                                             <div class="checkbox">
                                                 <label>
                                                     <input type="checkbox" id="kit_checkbox" value="Yes" 
                                                            onchange="updateFoodKitValues()">
-                                                    Kit - ₹1,000
+                                                    Kit
                                                 </label>
                                             </div>
                                             
@@ -1395,6 +1114,607 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                             </div>
                                         </div>
                                     </div>
+
+                                    <style>
+                                        .time-slot-table {
+                                            width: 100%;
+                                            border-collapse: collapse;
+                                            margin-bottom: 30px;
+                                            font-size: 13px;
+                                        }
+                                        .time-slot-table th {
+                                            background-color: #2fa0dd;
+                                            color: white;
+                                            padding: 10px;
+                                            text-align: center;
+                                            border: 1px solid #ddd;
+                                            font-weight: bold;
+                                        }
+                                        .time-slot-table td {
+                                            padding: 8px;
+                                            border: 1px solid #ddd;
+                                            text-align: center;
+                                        }
+                                        .time-slot-table tr:nth-child(even) {
+                                            background-color: #f9f9f9;
+                                        }
+                                        .time-slot-table .time-cell {
+                                            font-weight: bold;
+                                            background-color: #f0f0f0;
+                                            width: 150px;
+                                        }
+                                        .time-slot-table .selectable-cell {
+                                            cursor: pointer;
+                                        }
+                                        .time-slot-table .selectable-cell:hover {
+                                            background-color: #e8f4f8;
+                                        }
+                                        .time-slot-table .static-cell {
+                                            background-color: #fff;
+                                            font-style: italic;
+                                            color: #666;
+                                        }
+                                        .time-slot-table input[type="radio"] {
+                                            margin: 0;
+                                            cursor: pointer;
+                                        }
+                                        .day-header {
+                                            font-size: 18px;
+                                            font-weight: bold;
+                                            margin: 20px 0 10px 0;
+                                            color: #2fa0dd;
+                                        }
+                                    </style>
+                                    
+                                    <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        const exhibitionDayDropdown = document.getElementById('exhibition_day');
+                                        const timeSlotHidden = document.getElementById('time_slot_hidden');
+                                        const passTypeDropdown = document.getElementById('pass_type');
+                                        const foodKitGroup = document.getElementById('food_kit_group');
+                                        const passTimeSlotGroup = document.getElementById('pass_time_slot_group');
+                                        const tablesContainer = document.getElementById('time_slot_tables_container');
+
+                                        // Schedule data structure
+                                        const scheduleData = {
+                                            'Day1': {
+                                                title: 'Day 1 - Tuesday, 9th December 2025',
+                                                headers: ['Time', 'HALL 1', 'HALL 2', 'HALL 3', 'HALL 4', 'HALL 5'],
+                                                rows: [
+                                                    {
+                                                        time: '10:00 AM - 11:30 AM',
+                                                        cells: [
+                                                            {type: 'selectable', value: 'Day1-10:00-11:30-HALL1', label: 'Tutorial 1'},
+                                                            {type: 'selectable', value: 'Day1-10:00-11:30-HALL2', label: 'Tutorial 2'},
+                                                            {type: 'selectable', value: 'Day1-10:00-11:30-HALL3', label: 'Tutorial 3'},
+                                                            {type: 'selectable', value: 'Day1-10:00-11:30-HALL4', label: 'Workshop 1'},
+                                                            {type: 'selectable', value: 'Day1-10:00-11:30-HALL5', label: 'Workshop 2'}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '11:30 AM - 01:00 PM',
+                                                        cells: [
+                                                            {type: 'selectable', value: 'Day1-11:30-01:00-HALL1', label: 'Tutorial 4'},
+                                                            {type: 'selectable', value: 'Day1-11:30-01:00-HALL2', label: 'Tutorial 5'},
+                                                            {type: 'selectable', value: 'Day1-11:30-01:00-HALL3', label: 'Tutorial 6'},
+                                                            {type: 'selectable', value: 'Day1-11:30-01:00-HALL4', label: 'Workshop 3'},
+                                                            {type: 'selectable', value: 'Day1-11:30-01:00-HALL5', label: 'Workshop 4'}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '01:00 PM - 02:00 PM',
+                                                        cells: [
+                                                            {type: 'static', value: '', label: 'Lunch & Networking Break', colspan: 5}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '02:00 PM - 03:30 PM',
+                                                        cells: [
+                                                            {type: 'selectable', value: 'Day1-02:00-03:30-HALL1', label: 'Tutorial 7'},
+                                                            {type: 'selectable', value: 'Day1-02:00-03:30-HALL2', label: 'Tutorial 8'},
+                                                            {type: 'selectable', value: 'Day1-02:00-03:30-HALL3', label: 'Workshop 5'},
+                                                            {type: 'selectable', value: 'Day1-02:00-03:30-HALL4', label: 'Workshop 6'},
+                                                            {type: 'selectable', value: 'Day1-02:00-03:30-HALL5', label: 'Workshop 7'}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '04:00 PM - 05:30 PM',
+                                                        cells: [
+                                                            {type: 'selectable', value: 'Day1-04:00-05:30-HALL1', label: 'Tutorial 9'},
+                                                            {type: 'selectable', value: 'Day1-04:00-05:30-HALL2', label: 'Tutorial 10'},
+                                                            {type: 'selectable', value: 'Day1-04:00-05:30-HALL3', label: 'Workshop 8'},
+                                                            {type: 'selectable', value: 'Day1-04:00-05:30-HALL4', label: 'Workshop 9'},
+                                                            {type: 'selectable', value: 'Day1-04:00-05:30-HALL5', label: 'Workshop 10'}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '06:00 PM - 07:30 PM',
+                                                        cells: [
+                                                            {type: 'static', value: '', label: 'Exhibitions Opening', colspan: 5}
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            'Day2': {
+                                                title: 'Day 2 | Wednesday, 10th December 2025',
+                                                headers: ['Time', 'Auditorium HALL'],
+                                                rows: [
+                                                    {
+                                                        time: '09:00 AM - 10:30 AM',
+                                                        cells: [
+                                                            {type: 'static', value: '', label: 'Welcome and Registration', colspan: 1}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '10:30 AM - 11:30 AM',
+                                                        cells: [
+                                                            {type: 'static', value: '', label: 'Inauguration of the Event', colspan: 1}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '11:35 AM - 12:15 PM',
+                                                        cells: [
+                                                            {type: 'static', value: '', label: 'Inauguration of Exhibition', colspan: 1}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '12:30 PM - 01:00 PM',
+                                                        cells: [
+                                                            {type: 'static', value: '', label: 'Opening Keynote Talk', colspan: 1}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '01:00 PM - 02:00 PM',
+                                                        cells: [
+                                                            {type: 'static', value: '', label: 'Lunch & Networking Break', colspan: 1}
+                                                        ]
+                                                    }
+                                                ],
+                                                headers2: ['Time', 'HALL 1', 'HALL 2', 'HALL 3', 'HALL 4', 'HALL 5'],
+                                                rows2: [
+                                                    {
+                                                        time: '02:00 PM - 02:50 PM',
+                                                        cells: [
+                                                            {type: 'selectable', value: 'Day2-02:00-02:50-HALL1', label: 'Tutorial 11'},
+                                                            {type: 'selectable', value: 'Day2-02:00-02:50-HALL2', label: 'Tutorial 12'},
+                                                            {type: 'selectable', value: 'Day2-02:00-02:50-HALL3', label: 'Workshop 11'},
+                                                            {type: 'selectable', value: 'Day2-02:00-02:50-HALL4', label: 'Workshop 12'},
+                                                            {type: 'selectable', value: 'Day2-02:00-02:50-HALL5', label: 'Workshop 13'}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '03:00 PM - 03:50 PM',
+                                                        cells: [
+                                                            {type: 'selectable', value: 'Day2-03:00-03:50-HALL1', label: 'Tutorial 13'},
+                                                            {type: 'selectable', value: 'Day2-03:00-03:50-HALL2', label: 'Tutorial 14'},
+                                                            {type: 'selectable', value: 'Day2-03:00-03:50-HALL3', label: 'Workshop 14'},
+                                                            {type: 'selectable', value: 'Day2-03:00-03:50-HALL4', label: 'Workshop 15'},
+                                                            {type: 'selectable', value: 'Day2-03:00-03:50-HALL5', label: 'Workshop 16'}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '04:00 PM - 04:50 PM',
+                                                        cells: [
+                                                            {type: 'selectable', value: 'Day2-04:00-04:50-HALL1', label: 'Tutorial 15'},
+                                                            {type: 'selectable', value: 'Day2-04:00-04:50-HALL2', label: 'Tutorial 16'},
+                                                            {type: 'selectable', value: 'Day2-04:00-04:50-HALL3', label: 'Workshop 17'},
+                                                            {type: 'selectable', value: 'Day2-04:00-04:50-HALL4', label: 'Workshop 18'},
+                                                            {type: 'selectable', value: 'Day2-04:00-04:50-HALL5', label: 'Workshop 19'}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '05:00 PM - 05:50 PM',
+                                                        cells: [
+                                                            {type: 'selectable', value: 'Day2-05:00-05:50-HALL1', label: 'Tutorial 17'},
+                                                            {type: 'selectable', value: 'Day2-05:00-05:50-HALL2', label: 'Tutorial 18'},
+                                                            {type: 'selectable', value: 'Day2-05:00-05:50-HALL3', label: 'Workshop 20'},
+                                                            {type: 'selectable', value: 'Day2-05:00-05:50-HALL4', label: 'Workshop 21'},
+                                                            {type: 'selectable', value: 'Day2-05:00-05:50-HALL5', label: 'Workshop 22'}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '06:00 PM - 07:30 PM',
+                                                        cells: [
+                                                            {type: 'static', value: '', label: 'Gala Dinner', colspan: 5}
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            'Day3': {
+                                                title: 'Day 3 | Thursday, 11th December 2025',
+                                                headers: ['Time', 'HALL 1', 'HALL 2', 'HALL 3', 'HALL 4', 'HALL 5'],
+                                                rows: [
+                                                    {
+                                                        time: '10:00 AM - 11:30 AM',
+                                                        cells: [
+                                                            {type: 'selectable', value: 'Day3-10:00-11:30-HALL1', label: 'Opening Session'},
+                                                            {type: 'selectable', value: 'Day3-10:00-11:30-HALL2', label: 'Keynote'},
+                                                            {type: 'selectable', value: 'Day3-10:00-11:30-HALL3', label: 'Workshop 23'},
+                                                            {type: 'selectable', value: 'Day3-10:00-11:30-HALL4', label: 'Workshop 24'},
+                                                            {type: 'selectable', value: 'Day3-10:00-11:30-HALL5', label: 'Workshop 25'}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '11:30 AM - 01:00 PM',
+                                                        cells: [
+                                                            {type: 'selectable', value: 'Day3-11:30-01:00-HALL1', label: 'Research Track'},
+                                                            {type: 'selectable', value: 'Day3-11:30-01:00-HALL2', label: 'Parallel Track'},
+                                                            {type: 'selectable', value: 'Day3-11:30-01:00-HALL3', label: 'BoF Session'},
+                                                            {type: 'selectable', value: 'Day3-11:30-01:00-HALL4', label: 'Workshop 26'},
+                                                            {type: 'selectable', value: 'Day3-11:30-01:00-HALL5', label: 'Workshop 27'}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '01:00 PM - 02:00 PM',
+                                                        cells: [
+                                                            {type: 'static', value: '', label: 'Lunch & Networking Break', colspan: 5}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '02:00 PM - 03:30 PM',
+                                                        cells: [
+                                                            {type: 'selectable', value: 'Day3-02:00-03:30-HALL1', label: 'Invited Talk'},
+                                                            {type: 'selectable', value: 'Day3-02:00-03:30-HALL2', label: 'Research Track'},
+                                                            {type: 'selectable', value: 'Day3-02:00-03:30-HALL3', label: 'Parallel Track'},
+                                                            {type: 'selectable', value: 'Day3-02:00-03:30-HALL4', label: 'BoF Session'},
+                                                            {type: 'selectable', value: 'Day3-02:00-03:30-HALL5', label: 'BoF Session'}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '04:00 PM - 05:30 PM',
+                                                        cells: [
+                                                            {type: 'selectable', value: 'Day3-04:00-05:30-HALL1', label: 'Invited Talk'},
+                                                            {type: 'selectable', value: 'Day3-04:00-05:30-HALL2', label: 'Research Track'},
+                                                            {type: 'selectable', value: 'Day3-04:00-05:30-HALL3', label: 'Parallel Track'},
+                                                            {type: 'selectable', value: 'Day3-04:00-05:30-HALL4', label: 'BoF Session'},
+                                                            {type: 'selectable', value: 'Day3-04:00-05:30-HALL5', label: 'BoF Session'}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '06:00 PM - 07:30 PM',
+                                                        cells: [
+                                                            {type: 'static', value: '', label: 'Networking Dinner', colspan: 5}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '',
+                                                        cells: [
+                                                            {type: 'static', value: '', label: 'Visit to HPC Param Facility', colspan: 5}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '',
+                                                        cells: [
+                                                            {type: 'static', value: '', label: 'Local Sightseeing and Departure', colspan: 5}
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            'Day4': {
+                                                title: 'Day 4: Friday, 12 December, 2025',
+                                                headers: ['Time', 'HALL 1', 'HALL 2', 'HALL 3', 'HALL 4'],
+                                                rows: [
+                                                    {
+                                                        time: '10:00 AM - 11:30 AM',
+                                                        cells: [
+                                                            {type: 'selectable', value: 'Day4-10:00-11:30-HALL1', label: 'Plenary Talk'},
+                                                            {type: 'selectable', value: 'Day4-10:00-11:30-HALL2', label: 'Research Track'},
+                                                            {type: 'selectable', value: 'Day4-10:00-11:30-HALL3', label: 'Invited Talk'},
+                                                            {type: 'selectable', value: 'Day4-10:00-11:30-HALL4', label: 'Invited Talk'}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '11:30 AM - 01:00 PM',
+                                                        cells: [
+                                                            {type: 'selectable', value: 'Day4-11:30-01:00-HALL1', label: 'Plenary Talk'},
+                                                            {type: 'selectable', value: 'Day4-11:30-01:00-HALL2', label: 'Parallel Track'},
+                                                            {type: 'selectable', value: 'Day4-11:30-01:00-HALL3', label: 'Research Track'},
+                                                            {type: 'selectable', value: 'Day4-11:30-01:00-HALL4', label: 'Research Track'}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '01:00 PM - 02:00 PM',
+                                                        cells: [
+                                                            {type: 'static', value: '', label: 'Lunch & Networking Break', colspan: 4}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '02:00 PM - 03:30 PM',
+                                                        cells: [
+                                                            {type: 'selectable', value: 'Day4-02:00-03:30-HALL1', label: 'Plenary Talk'},
+                                                            {type: 'selectable', value: 'Day4-02:00-03:30-HALL2', label: 'BoF Session'},
+                                                            {type: 'selectable', value: 'Day4-02:00-03:30-HALL3', label: 'Parallel Track'},
+                                                            {type: 'selectable', value: 'Day4-02:00-03:30-HALL4', label: 'Parallel Track'}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '04:00 PM - 05:30 PM',
+                                                        cells: [
+                                                            {type: 'selectable', value: 'Day4-04:00-05:30-HALL1', label: 'Plenary Talk'},
+                                                            {type: 'selectable', value: 'Day4-04:00-05:30-HALL2', label: 'Research Track'},
+                                                            {type: 'selectable', value: 'Day4-04:00-05:30-HALL3', label: 'BoF Session'},
+                                                            {type: 'selectable', value: 'Day4-04:00-05:30-HALL4', label: 'BoF Session'}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '06:00 PM - 07:30 PM',
+                                                        cells: [
+                                                            {type: 'static', value: '', label: 'Networking Dinner', colspan: 4}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '',
+                                                        cells: [
+                                                            {type: 'static', value: '', label: 'Posters on Display', colspan: 4}
+                                                        ]
+                                                    },
+                                                    {
+                                                        time: '',
+                                                        cells: [
+                                                            {type: 'static', value: '', label: 'Exhibitions', colspan: 4}
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        };
+
+                                        // Function to create table for a day
+                                        function createDayTable(dayKey) {
+                                            const dayData = scheduleData[dayKey];
+                                            if (!dayData) return '';
+
+                                            let html = `<div class="day-header">${dayData.title}</div>`;
+                                            html += '<table class="time-slot-table">';
+                                            html += '<thead><tr>';
+                                            dayData.headers.forEach(header => {
+                                                html += `<th>${header}</th>`;
+                                            });
+                                            html += '</tr></thead><tbody>';
+
+                                            dayData.rows.forEach((row, rowIndex) => {
+                                                const rowId = `${dayKey}_row_${rowIndex}`;
+                                                html += '<tr>';
+                                                html += `<td class="time-cell">${row.time}</td>`;
+                                                
+                                                row.cells.forEach(cell => {
+                                                    if (cell.colspan) {
+                                                        html += `<td class="static-cell" colspan="${cell.colspan}">${cell.label}</td>`;
+                                                    } else if (cell.type === 'selectable') {
+                                                        const radioId = `radio_${cell.value.replace(/[^a-zA-Z0-9]/g, '_')}`;
+                                                        html += `<td class="selectable-cell">
+                                                            <input type="radio" name="time_slot_${rowId}" id="${radioId}" value="${cell.value}" data-label="${cell.label}" data-day="${dayKey}" data-time="${row.time}">
+                                                            <label for="${radioId}">${cell.label}</label>
+                                                        </td>`;
+                                                    } else {
+                                                        html += `<td class="static-cell">${cell.label}</td>`;
+                                                    }
+                                                });
+                                                html += '</tr>';
+                                            });
+
+                                            html += '</tbody></table>';
+
+                                            // Add second table for Day 2 if exists
+                                            if (dayData.rows2 && dayData.headers2) {
+                                                html += '<table class="time-slot-table" style="margin-top: 20px;">';
+                                                html += '<thead><tr>';
+                                                dayData.headers2.forEach(header => {
+                                                    html += `<th>${header}</th>`;
+                                                });
+                                                html += '</tr></thead><tbody>';
+
+                                                dayData.rows2.forEach((row, rowIndex) => {
+                                                    const rowId = `${dayKey}_row2_${rowIndex}`;
+                                                    html += '<tr>';
+                                                    html += `<td class="time-cell">${row.time}</td>`;
+                                                    
+                                                    row.cells.forEach(cell => {
+                                                        if (cell.colspan) {
+                                                            html += `<td class="static-cell" colspan="${cell.colspan}">${cell.label}</td>`;
+                                                        } else if (cell.type === 'selectable') {
+                                                            const radioId = `radio_${cell.value.replace(/[^a-zA-Z0-9]/g, '_')}`;
+                                                            html += `<td class="selectable-cell">
+                                                                <input type="radio" name="time_slot_${rowId}" id="${radioId}" value="${cell.value}" data-label="${cell.label}" data-day="${dayKey}" data-time="${row.time}">
+                                                                <label for="${radioId}">${cell.label}</label>
+                                                            </td>`;
+                                                        } else {
+                                                            html += `<td class="static-cell">${cell.label}</td>`;
+                                                        }
+                                                    });
+                                                    html += '</tr>';
+                                                });
+
+                                                html += '</tbody></table>';
+                                            }
+
+                                            return html;
+                                        }
+
+                                        // Function to update JSON in hidden input
+                                        function updateTimeSlotJSON() {
+                                            const selectedSlots = {};
+                                            const checkedRadios = document.querySelectorAll('input[type="radio"][name^="time_slot_"]:checked');
+                                            
+                                            checkedRadios.forEach(radio => {
+                                                const day = radio.getAttribute('data-day');
+                                                if (!selectedSlots[day]) {
+                                                    selectedSlots[day] = [];
+                                                }
+                                                selectedSlots[day].push({
+                                                    value: radio.value,
+                                                    label: radio.getAttribute('data-label'),
+                                                    time: radio.getAttribute('data-time')
+                                                });
+                                            });
+
+                                            if (timeSlotHidden) {
+                                                timeSlotHidden.value = JSON.stringify(selectedSlots);
+                                            }
+
+                                            // Hide error if selections exist
+                                            const errorDiv = document.getElementById('time_slot_error');
+                                            if (errorDiv && Object.keys(selectedSlots).length > 0) {
+                                                errorDiv.style.display = 'none';
+                                            }
+                                        }
+
+                                        // Function to show/hide food and kit options
+                                        function toggleFoodKitOptions() {
+                                            const passType = passTypeDropdown ? passTypeDropdown.value : '';
+                                            if (passType === 'workshop' && foodKitGroup) {
+                                                foodKitGroup.style.display = 'block';
+                                            } else if (foodKitGroup) {
+                                                foodKitGroup.style.display = 'none';
+                                                // Reset food/kit values when hidden
+                                                document.getElementById('food_checkbox').checked = false;
+                                                document.getElementById('kit_checkbox').checked = false;
+                                                updateFoodKitValues();
+                                            }
+                                        }
+
+                                        // Handle pass type change
+                                        if (passTypeDropdown) {
+                                            passTypeDropdown.addEventListener('change', function() {
+                                                const passType = this.value;
+                                                
+                                                // Toggle food/kit options
+                                                toggleFoodKitOptions();
+                                                
+                                                // Toggle IEEE section visibility
+                                                const ieeeSection = document.getElementById('del_type');
+                                                const ieeeNumberGroup = document.getElementById('ieee_number_group');
+                                                if (ieeeSection) {
+                                                    if (passType === 'workshop') {
+                                                        // Hide IEEE section for 2-Day Delegate Pass
+                                                        ieeeSection.style.display = 'none';
+                                                        if (ieeeNumberGroup) {
+                                                            ieeeNumberGroup.style.display = 'none';
+                                                        }
+                                                        // Reset IEEE values
+                                                        const yesRadio = document.getElementById('yes1');
+                                                        const noRadio = document.getElementById('no1');
+                                                        if (noRadio) noRadio.checked = true;
+                                                        if (yesRadio) yesRadio.checked = false;
+                                                        const ieeeNumberInput = document.getElementById('ieee_member_number');
+                                                        if (ieeeNumberInput) {
+                                                            ieeeNumberInput.value = '';
+                                                            ieeeNumberInput.required = false;
+                                                        }
+                                                    } else {
+                                                        // Show IEEE section for other pass types
+                                                        ieeeSection.style.display = 'block';
+                                                    }
+                                                }
+                                                
+                                                // Toggle time slot selection - only show for workshop (2-Day Delegate Pass)
+                                                if (passType === 'workshop') {
+                                                    // Time slots will be shown when day is selected
+                                                    // Just ensure it's hidden initially
+                                                    passTimeSlotGroup.style.display = 'none';
+                                                    tablesContainer.innerHTML = '';
+                                                    if (timeSlotHidden) timeSlotHidden.value = '';
+                                                } else {
+                                                    // Hide time slot selection for other pass types
+                                                    passTimeSlotGroup.style.display = 'none';
+                                                    tablesContainer.innerHTML = '';
+                                                    if (timeSlotHidden) timeSlotHidden.value = '';
+                                                }
+                                            });
+                                        }
+
+                                        // Handle exhibition day change for workshop pass
+                                        if (exhibitionDayDropdown) {
+                                            exhibitionDayDropdown.addEventListener('change', function() {
+                                                const selectedDay = this.value;
+                                                const passType = passTypeDropdown ? passTypeDropdown.value : '';
+                                                
+                                                // Only show time slots for workshop (2-Day Delegate Pass)
+                                                if (passType === 'workshop' && selectedDay && selectedDay.includes(',')) {
+                                                    const days = selectedDay.split(',');
+                                                    tablesContainer.innerHTML = '';
+                                                    
+                                                    days.forEach(day => {
+                                                        const dayKey = day.trim();
+                                                        if (scheduleData[dayKey]) {
+                                                            tablesContainer.innerHTML += createDayTable(dayKey);
+                                                        }
+                                                    });
+
+                                                    // Add event listeners to all radio buttons
+                                                    // Radio buttons are already grouped by name attribute (per row), so no need for manual grouping
+                                                    const radios = tablesContainer.querySelectorAll('input[type="radio"]');
+                                                    radios.forEach(radio => {
+                                                        radio.addEventListener('change', function() {
+                                                            updateTimeSlotJSON();
+                                                        });
+                                                    });
+
+                                                    passTimeSlotGroup.style.display = 'block';
+                                                } else {
+                                                    // Hide time slot selection for non-workshop pass types or when no day is selected
+                                                    passTimeSlotGroup.style.display = 'none';
+                                                    tablesContainer.innerHTML = '';
+                                                    if (timeSlotHidden) timeSlotHidden.value = '';
+                                                }
+                                            });
+                                        }
+
+                                        // Form validation
+                                        const form = document.querySelector('form');
+                                        if (form) {
+                                            form.addEventListener('submit', function(e) {
+                                                const passType = passTypeDropdown ? passTypeDropdown.value : '';
+                                                
+                                                if (passType === 'workshop') {
+                                                    updateTimeSlotJSON();
+                                                    const jsonValue = timeSlotHidden ? timeSlotHidden.value : '';
+                                                    
+                                                    if (!jsonValue || jsonValue === '{}') {
+                                                        e.preventDefault();
+                                                        const errorDiv = document.getElementById('time_slot_error');
+                                                        if (errorDiv) {
+                                                            errorDiv.style.display = 'block';
+                                                        }
+                                                        alert('Please select at least one time slot from each selected day.');
+                                                        return false;
+                                                    }
+                                                    
+                                                    try {
+                                                        const selected = JSON.parse(jsonValue);
+                                                        const selectedDays = Object.keys(selected);
+                                                        const exhibitionDay = exhibitionDayDropdown ? exhibitionDayDropdown.value : '';
+                                                        const expectedDays = exhibitionDay ? exhibitionDay.split(',') : [];
+                                                        
+                                                        // Check if at least one slot is selected for each expected day
+                                                        for (let day of expectedDays) {
+                                                            const dayKey = day.trim();
+                                                            if (!selected[dayKey] || selected[dayKey].length === 0) {
+                                                                e.preventDefault();
+                                                                alert(`Please select at least one time slot for ${dayKey}.`);
+                                                                return false;
+                                                            }
+                                                        }
+                                                    } catch (err) {
+                                                        e.preventDefault();
+                                                        alert('Error validating time slots. Please try again.');
+                                                        return false;
+                                                    }
+                                                }
+                                            });
+                                        }
+
+                                        // Initialize on page load
+                                        toggleFoodKitOptions();
+                                        
+                                        // Ensure time slot group is hidden if pass type is not workshop
+                                        const initialPassType = passTypeDropdown ? passTypeDropdown.value : '';
+                                        if (initialPassType !== 'workshop') {
+                                            passTimeSlotGroup.style.display = 'none';
+                                            tablesContainer.innerHTML = '';
+                                            if (timeSlotHidden) timeSlotHidden.value = '';
+                                        }
+                                    });
+                                    </script>
 
                                     <script>
                                     function updateFoodKitValues() {
@@ -1460,96 +1780,9 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                     });
                                     </script>
 
-                                    <!-- OLD STATIC OPTIONS REMOVED - NOW DYNAMIC BASED ON DAY SELECTION -->
-                                    
-
-                                    <script>
-                                    document.addEventListener('DOMContentLoaded', function () {
-                                        var passTypeDropdown = document.getElementById('pass_type');
-                                        var passTimeSlotGroup = document.getElementById('pass_time_slot_group');
-                                        var passTimeSlotSelect = document.getElementById('pass_time_slot');
-                                        var timeSlotHidden = document.getElementById('time_slot_hidden');
-
-                                        if (!passTypeDropdown || !passTimeSlotGroup || !passTimeSlotSelect || !timeSlotHidden) return;
-
-                                        function togglePassTimeSlot() {
-                                            if (passTypeDropdown.value === 'workshop') {
-                                                passTimeSlotGroup.style.display = 'block';
-                                                // DO NOT set required for workshop - we use checkboxes instead
-                                                passTimeSlotSelect.required = false;
-                                                passTimeSlotSelect.style.display = 'none'; // Hide dropdown, use checkboxes
-                                                // keep hidden input in sync (will be updated by checkboxes)
-                                                timeSlotHidden.value = passTimeSlotSelect.value || '';
-                                            } else {
-                                                passTimeSlotGroup.style.display = 'none';
-                                                passTimeSlotSelect.required = false;
-                                                passTimeSlotSelect.value = '';
-                                                timeSlotHidden.value = '';
-                                            }
-                                        }
-
-                                        // Sync hidden input whenever user picks a slot
-                                        passTimeSlotSelect.addEventListener('change', function () {
-                                            timeSlotHidden.value = this.value;
-                                        });
-
-                                        // React to changes of Pass Type
-                                        passTypeDropdown.addEventListener('change', function() {
-                                            togglePassTimeSlot();
-                                            // Additional safeguard: ensure required is removed for workshop
-                                            if (passTypeDropdown.value === 'workshop') {
-                                                passTimeSlotSelect.required = false;
-                                                passTimeSlotSelect.removeAttribute('required');
-                                                passTimeSlotSelect.style.display = 'none';
-                                                console.log('Pass type changed to workshop - removed required from pass_time_slot');
-                                            }
-                                        });
-
-                                        // Initialize on load in case a value is pre-selected
-                                        togglePassTimeSlot();
-                                        
-                                        // Additional safeguard on initialization
-                                        if (passTypeDropdown.value === 'workshop') {
-                                            passTimeSlotSelect.required = false;
-                                            passTimeSlotSelect.removeAttribute('required');
-                                            passTimeSlotSelect.style.display = 'none';
-                                        }
-                                        
-                                        // Use MutationObserver to prevent required from being set for workshop passes
-                                        const observer = new MutationObserver(function(mutations) {
-                                            mutations.forEach(function(mutation) {
-                                                if (mutation.type === 'attributes' && mutation.attributeName === 'required') {
-                                                    if (passTypeDropdown.value === 'workshop' && passTimeSlotSelect.hasAttribute('required')) {
-                                                        console.log('Preventing required attribute from being set for workshop pass');
-                                                        passTimeSlotSelect.removeAttribute('required');
-                                                        passTimeSlotSelect.required = false;
-                                                    }
-                                                }
-                                            });
-                                        });
-                                        
-                                        observer.observe(passTimeSlotSelect, {
-                                            attributes: true,
-                                            attributeFilter: ['required']
-                                        });
-                                        
-                                        // Also check periodically to ensure required stays removed for workshop
-                                        setInterval(function() {
-                                            if (passTypeDropdown.value === 'workshop' && (passTimeSlotSelect.required || passTimeSlotSelect.hasAttribute('required'))) {
-                                                passTimeSlotSelect.removeAttribute('required');
-                                                passTimeSlotSelect.required = false;
-                                            }
-                                        }, 100); // Check every 100ms
-                                    });
-                                    </script>
-
                                     <?php if ($del != 'nextgen') { ?>
-                                        <!-- IEEE Member section hidden - no discount now. Default value is "No" -->
-                                        <input type="hidden" name="ieee_member" value="No">
-                                        <input type="hidden" name="ieee_member_number" value="">
-                                        
-                                        <!-- Hidden IEEE Member question section (functionality removed) -->
-                                        <div class="form-group form-md-radios del_type" id="del_type" style="display:none;">
+                                        <!-- IEEE Member question section -->
+                                        <div class="form-group form-md-radios del_type" id="del_type">
                                         <label class="control-label col-md-3" style="color:#36454F;">
                                             Are You IEEE Member?
                                             <span class="required"> * </span>

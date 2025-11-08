@@ -6,7 +6,8 @@ ini_set('max_execution_time', '0');
 // // echo "\n";
 // // echo "\n";
 // die;
-//ini_set('display_errors', 1);
+
+
 include 'csrf_token.php';
 // Function to validate CSRF token
 function validateCsrfToken($token)
