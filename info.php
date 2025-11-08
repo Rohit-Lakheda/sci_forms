@@ -757,6 +757,11 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                 otherSectorInput.required = false;
                                                 otherSectorInput.value = ''; // Clear the input when hidden
                                             }
+                                            
+                                            // Update required attributes
+                                            if (typeof window.manageRequiredAttributes === 'function') {
+                                                setTimeout(window.manageRequiredAttributes, 100);
+                                            }
                                         }
                                     </script>
 
@@ -818,6 +823,11 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                         if (noRadio) noRadio.checked = false;
                                                     }
                                                 }
+                                                
+                                                // Update required attributes
+                                                if (typeof window.manageRequiredAttributes === 'function') {
+                                                    setTimeout(window.manageRequiredAttributes, 100);
+                                                }
                                             }
                                             
                                             // Initialize IEEE section visibility on page load
@@ -825,27 +835,32 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                             
                                             // Only add event listener if pass_type dropdown exists
                                             if (passTypeDropdown) {
-                                                passTypeDropdown.addEventListener('change', function() {
-                                                    if (exhibitionDayGroup) {
-                                                        if (this.value === 'exhibition' || this.value === 'workshop') {
-                                                            exhibitionDayGroup.style.display = 'block';
-                                                            const exhibitionDay = document.getElementById('exhibition_day');
-                                                            if (exhibitionDay) {
-                                                                exhibitionDay.required = true;
-                                                            }
-                                                        } else {
-                                                            exhibitionDayGroup.style.display = 'none';
-                                                            const exhibitionDay = document.getElementById('exhibition_day');
-                                                            if (exhibitionDay) {
-                                                                exhibitionDay.value = ''; // Reset selection
-                                                                exhibitionDay.required = false;
-                                                            }
+                                            passTypeDropdown.addEventListener('change', function() {
+                                                if (exhibitionDayGroup) {
+                                                    if (this.value === 'exhibition' || this.value === 'workshop') {
+                                                        exhibitionDayGroup.style.display = 'block';
+                                                        const exhibitionDay = document.getElementById('exhibition_day');
+                                                        if (exhibitionDay) {
+                                                            exhibitionDay.required = true;
+                                                        }
+                                                    } else {
+                                                        exhibitionDayGroup.style.display = 'none';
+                                                        const exhibitionDay = document.getElementById('exhibition_day');
+                                                        if (exhibitionDay) {
+                                                            exhibitionDay.value = ''; // Reset selection
+                                                            exhibitionDay.required = false;
                                                         }
                                                     }
-                                                    
-                                                    // Toggle IEEE section based on pass type
-                                                    toggleIEEESection();
-                                                });
+                                                }
+                                                
+                                                // Toggle IEEE section based on pass type
+                                                toggleIEEESection();
+                                                
+                                                // Update required attributes
+                                                if (typeof window.manageRequiredAttributes === 'function') {
+                                                    setTimeout(window.manageRequiredAttributes, 100);
+                                                }
+                                            });
                                             }
                                         });
                                     </script>
@@ -856,7 +871,8 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                         <label class="col-md-3 control-label">Paper Id<span class="dips-required">*</span></label>
                                         <div class="col-md-6">
                                             <input type="text" class="form-control" name="paper_id" id="paper_id"
-                                                value="<?php echo isset($_SESSION['paper_id']) ? htmlspecialchars($_SESSION['paper_id']) : ''; ?>" />
+                                                value="<?php echo isset($_SESSION['paper_id']) ? htmlspecialchars($_SESSION['paper_id']) : ''; ?>"
+                                                maxlength="50" />
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -1024,6 +1040,11 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                     const noRadio = document.getElementById('no1');
                                                     if (yesRadio) yesRadio.checked = false;
                                                     if (noRadio) noRadio.checked = false;
+                                                }
+                                                
+                                                // Update required attributes
+                                                if (typeof window.manageRequiredAttributes === 'function') {
+                                                    setTimeout(window.manageRequiredAttributes, 100);
                                                 }
                                             }
                                         }
@@ -1576,9 +1597,16 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                             } else if (foodKitGroup) {
                                                 foodKitGroup.style.display = 'none';
                                                 // Reset food/kit values when hidden
-                                                document.getElementById('food_checkbox').checked = false;
-                                                document.getElementById('kit_checkbox').checked = false;
+                                                const foodCheckbox = document.getElementById('food_checkbox');
+                                                const kitCheckbox = document.getElementById('kit_checkbox');
+                                                if (foodCheckbox) foodCheckbox.checked = false;
+                                                if (kitCheckbox) kitCheckbox.checked = false;
                                                 updateFoodKitValues();
+                                            }
+                                            
+                                            // Update required attributes
+                                            if (typeof window.manageRequiredAttributes === 'function') {
+                                                setTimeout(window.manageRequiredAttributes, 100);
                                             }
                                         }
 
@@ -1619,6 +1647,11 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                         if (yesRadioShow) yesRadioShow.checked = false;
                                                         if (noRadioShow) noRadioShow.checked = false;
                                                     }
+                                                    
+                                                    // Update required attributes
+                                                    if (typeof window.manageRequiredAttributes === 'function') {
+                                                        setTimeout(window.manageRequiredAttributes, 100);
+                                                    }
                                                 }
                                                 
                                                 // Toggle time slot selection - only show for workshop (2-Day Delegate Pass)
@@ -1633,6 +1666,11 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                     passTimeSlotGroup.style.display = 'none';
                                                     tablesContainer.innerHTML = '';
                                                     if (timeSlotHidden) timeSlotHidden.value = '';
+                                                }
+                                                
+                                                // Update required attributes after toggling time slot group
+                                                if (typeof window.manageRequiredAttributes === 'function') {
+                                                    setTimeout(window.manageRequiredAttributes, 100);
                                                 }
                                             });
                                         }
@@ -1670,6 +1708,11 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                     passTimeSlotGroup.style.display = 'none';
                                                     tablesContainer.innerHTML = '';
                                                     if (timeSlotHidden) timeSlotHidden.value = '';
+                                                }
+                                                
+                                                // Update required attributes
+                                                if (typeof window.manageRequiredAttributes === 'function') {
+                                                    setTimeout(window.manageRequiredAttributes, 100);
                                                 }
                                             });
                                         }
@@ -1886,6 +1929,11 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                         options[i].style.display = 'block';
                                                     }
                                                 }
+                                            }
+                                            
+                                            // Update required attributes
+                                            if (typeof window.manageRequiredAttributes === 'function') {
+                                                setTimeout(window.manageRequiredAttributes, 100);
                                             }
                                         }
 
@@ -2200,6 +2248,7 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                     <div class="col-md-6">
                                         <input type="text" class="form-control" name="org" id="org"
                                             value="<?php echo (isset($_SESSION['org']) ? $_SESSION['org'] : " "); ?>"
+                                            maxlength="100"
                                             required="required" />
                                     </div>
                                 </div>
@@ -2210,6 +2259,7 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                     <div class="col-md-6">
                                         <input type="text" class="form-control" name="address" id="address"
                                             value="<?php echo (isset($_SESSION['address']) ? $_SESSION['address'] : " "); ?>"
+                                            maxlength="200"
                                             required="required" />
                                     </div>
                                 </div>
@@ -2272,17 +2322,17 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                             $inputmode = 'numeric';
                                             $placeholder = '';
                                         } elseif (isset($cit) && $cit === 'int') {
-                                            // international alphanumeric with special characters
-                                            $pattern = '^[A-Za-z0-9\-\s#.,/]{3,10}$';
-                                            $minlength = '3';
-                                            $maxlength = '10';
-                                            $title = 'Enter postal code (3-10 characters)';
+                                            // international alphanumeric with special characters - flexible for all countries
+                                            $pattern = '^[A-Za-z0-9\-\s]+$';
+                                            $minlength = '2';
+                                            $maxlength = '15';
+                                            $title = 'Enter postal code (2-15 characters, letters, numbers, spaces, and hyphens allowed)';
                                             $inputmode = 'text';
                                             $placeholder = '';
                                         } else {
-                                            $pattern = '^[A-Za-z0-9\-\s#.,/]{3,10}$';
-                                            $maxlength = '10';
-                                            $title = 'Enter a valid postal code (3-10 characters)';
+                                            $pattern = '^[A-Za-z0-9\-\s]+$';
+                                            $maxlength = '15';
+                                            $title = 'Enter a valid postal code (2-15 characters, letters, numbers, spaces, and hyphens allowed)';
                                             $inputmode = 'text';
                                             $placeholder = '';
                                         }
@@ -2313,8 +2363,8 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
 
                                         function makeAlphanumericListener(limit) {
                                             return function (e) {
-                                                // Allow alphanumeric, spaces, hyphens, #, ., comma, / and limit characters
-                                                e.target.value = e.target.value.replace(/[^A-Za-z0-9\-\s#.,/]/g, '').slice(0, limit);
+                                                // Allow alphanumeric, spaces, and hyphens for international postal codes
+                                                e.target.value = e.target.value.replace(/[^A-Za-z0-9\-\s]/g, '').slice(0, limit);
                                             };
                                         }
 
@@ -2332,13 +2382,13 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                         }
 
                                         function setIntlAlphanumericProps() {
-                                            zipcode.setAttribute('pattern', '^[A-Za-z0-9\\-\\s#.,/]{3,10}$');
-                                            zipcode.setAttribute('title', 'Enter postal code (3-10 character)');
+                                            zipcode.setAttribute('pattern', '^[A-Za-z0-9\\-\\s]{2,15}$');
+                                            zipcode.setAttribute('title', 'Enter postal code (2-15 characters, letters, numbers, spaces, and hyphens allowed)');
                                             zipcode.setAttribute('inputmode', 'text');
-                                            zipcode.setAttribute('maxlength', '10');
+                                            zipcode.setAttribute('maxlength', '15');
                                             zipcode.setAttribute('placeholder', '');
 
-                                            // attach alphanumeric listener with special characters
+                                            // attach alphanumeric listener with spaces and hyphens
                                             if (inputListener) zipcode.removeEventListener('input', inputListener);
                                             inputListener = makeAlphanumericListener(15);
                                             zipcode.addEventListener('input', inputListener);
@@ -2372,6 +2422,7 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                     <div class="col-md-6">
                                         <input type="text" class="form-control" name="nationality" id="nationality"
                                             value="<?php echo (isset($_SESSION['nationality']) ? $_SESSION['nationality'] : " "); ?>"
+                                            maxlength="50"
                                             required="required" />
                                     </div>
                                 </div>
@@ -2540,7 +2591,8 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                             </span></label>
                                         <div class="col-md-6">
                                             <input type="text" id="firstname1" name="firstname1" class="form-control"
-                                                value="<?php echo isset($attendees[0]['first_name']) ? $attendees[0]['first_name'] : ''; ?>">
+                                                value="<?php echo isset($attendees[0]['first_name']) ? $attendees[0]['first_name'] : ''; ?>"
+                                                maxlength="50">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -2549,7 +2601,8 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                             </span></label>
                                         <div class="col-md-6">
                                             <input type="text" id="lastname1" name="lastname1" class="form-control"
-                                                value="<?php echo isset($attendees[0]['last_name']) ? $attendees[0]['last_name'] : ''; ?>">
+                                                value="<?php echo isset($attendees[0]['last_name']) ? $attendees[0]['last_name'] : ''; ?>"
+                                                maxlength="50">
                                         </div>
                                     </div>
                                     <?php $isStudent = (isset($_SESSION['sector']) && $_SESSION['sector'] === 'Student'); ?>
@@ -2560,6 +2613,7 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                         <div class="col-md-6">
                                             <input type="text" id="designation1" name="designation1" class="form-control"
                                                 value="<?php echo isset($attendees[0]['designation']) ? $attendees[0]['designation'] : ''; ?>"
+                                                maxlength="100"
                                                 <?php echo $isStudent ? '' : 'required="required"'; ?> >
                                         </div>
                                     </div>
@@ -2601,7 +2655,8 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                    </label>
                                                    <div class="col-md-6">
                                                        <input type="text" id="course1" name="course1" class="form-control"
-                                                           value="<?php echo isset($attendees[0]['course']) ? $attendees[0]['course'] : ''; ?>">
+                                                           value="<?php echo isset($attendees[0]['course']) ? $attendees[0]['course'] : ''; ?>"
+                                                           maxlength="100">
                                                    </div>
                                                </div>
                                                <div class="form-group">
@@ -2610,7 +2665,8 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                    </label>
                                                    <div class="col-md-6">
                                                        <input type="text" id="branch1" name="branch1" class="form-control"
-                                                           value="<?php echo isset($attendees[0]['branch']) ? $attendees[0]['branch'] : ''; ?>">
+                                                           value="<?php echo isset($attendees[0]['branch']) ? $attendees[0]['branch'] : ''; ?>"
+                                                           maxlength="100">
                                                    </div>
                                                </div>
                                            </div>
@@ -2653,6 +2709,11 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                        branch.required = true;
                                                        if (courseReqSpan) courseReqSpan.style.display = '';
                                                        if (branchReqSpan) branchReqSpan.style.display = '';
+                                                   }
+                                                   
+                                                   // Update required attributes
+                                                   if (typeof window.manageRequiredAttributes === 'function') {
+                                                       setTimeout(window.manageRequiredAttributes, 100);
                                                    }
                                                }
 
@@ -2716,6 +2777,11 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                 idCardUpload.style.display = 'none';
                                                 idCardInput.required = false;
                                                 idCardInput.value = ''; // Clear the file input
+                                            }
+                                            
+                                            // Update required attributes
+                                            if (typeof window.manageRequiredAttributes === 'function') {
+                                                setTimeout(window.manageRequiredAttributes, 100);
                                             }
                                         }
 
@@ -2854,7 +2920,7 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                             <input type="text" id="phone1" name="phone1" class="form-control"
                                                 value="<?php echo isset($attendees[0]['phone']) ? $attendees[0]['phone'] : ''; ?>"
                                                 placeholder="Enter phone number"
-                                             maxlength="15" oninput="this.value = this.value.replace(/\D/g,'').slice(0,15);" title="" >
+                                                title="" >
                                         </div>
                                     </div>
 
@@ -3847,22 +3913,32 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
     </script>
     <script>
         // Function to toggle visibility of GST fields
-        document.getElementById("gstDropdown").addEventListener("change", function() {
-            const gstFields = document.getElementById("gstFields");
-            const isRequired = this.value === "Yes";
+        const gstDropdown = document.getElementById("gstDropdown");
+        if (gstDropdown) {
+            gstDropdown.addEventListener("change", function() {
+                const gstFields = document.getElementById("gstFields");
+                const isRequired = this.value === "Yes";
 
-            // Toggle visibility of GST fields
-            gstFields.style.display = isRequired ? "block" : "none";
+                // Toggle visibility of GST fields
+                if (gstFields) {
+                    gstFields.style.display = isRequired ? "block" : "none";
 
-            // Get all input fields inside GST fields
-            const inputs = gstFields.querySelectorAll("input");
-            inputs.forEach(input => {
-                input.required = isRequired; // Set required attribute
-                if (!isRequired) {
-                    input.value = ""; // Clear the input fields if not required
+                    // Get all input fields inside GST fields
+                    const inputs = gstFields.querySelectorAll("input");
+                    inputs.forEach(input => {
+                        input.required = isRequired; // Set required attribute
+                        if (!isRequired) {
+                            input.value = ""; // Clear the input fields if not required
+                        }
+                    });
+                }
+                
+                // Update required attributes
+                if (typeof window.manageRequiredAttributes === 'function') {
+                    setTimeout(window.manageRequiredAttributes, 100);
                 }
             });
-        });
+        }
     </script>
 
 
@@ -3919,6 +3995,11 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                         }
                     });
                 }
+            }
+            
+            // Update required attributes after showing/hiding fields
+            if (typeof window.manageRequiredAttributes === 'function') {
+                setTimeout(window.manageRequiredAttributes, 100);
             }
         }
 
@@ -4084,6 +4165,32 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                         separateDialCode: true, // Show the country code separately
                         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js" // Utility for validation
                     });
+                    
+                    // Set initial maxlength for India (10 digits)
+                    input.setAttribute('maxlength', '10');
+                    
+                    // Function to update maxlength based on country
+                    function updatePhoneMaxLength(input, iti) {
+                        var dialCode = iti.getSelectedCountryData().dialCode;
+                        var countryCode = iti.getSelectedCountryData().iso2;
+                        var isIndia = (dialCode == '91' || dialCode == 91 || countryCode === 'in');
+                        input.setAttribute('maxlength', isIndia ? '10' : '15');
+                    }
+                    
+                    // Update maxlength when country changes
+                    input.addEventListener('countrychange', function() {
+                        updatePhoneMaxLength(input, iti);
+                    });
+                    
+                    // Set initial maxlength
+                    updatePhoneMaxLength(input, iti);
+                    
+                    // Add dynamic oninput handler to restrict to digits only and respect maxlength
+                    input.addEventListener('input', function() {
+                        var maxLength = parseInt(this.getAttribute('maxlength')) || 15;
+                        this.value = this.value.replace(/\D/g, '').slice(0, maxLength);
+                    });
+                    
                     phoneInputs.push({
                         input: input,
                         iti: iti
@@ -4091,11 +4198,99 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                 }
             }
 
-            // Function to validate the phone number format (+countrycode-phonenumber)
-            function isValidPhoneNumber(phoneNumber) {
-                var phoneRegex = /^\+\d{1,4}-\d{6,14}$/; // Regex to validate +countrycode-phonenumber format
-                return phoneRegex.test(phoneNumber);
+            // Function to validate the phone number based on country
+            function validatePhoneNumber(input, iti, inputId) {
+                var dialCode = iti.getSelectedCountryData().dialCode; // Get the country code (e.g., 91)
+                var countryCode = iti.getSelectedCountryData().iso2; // Get ISO2 country code (e.g., 'in')
+                
+                // Remove existing country code if already present
+                var currentValue = input.value.trim();
+                currentValue = currentValue.replace(/^\+\d{1,4}-/, ''); // Remove country code if already appended
+
+                // Remove all non-numeric characters from the phone number
+                var localNumber = currentValue.replace(/\D+/g, ''); // Removes any non-digit characters including white spaces
+
+                // Check if it's India (dialCode 91 or countryCode 'in')
+                var isIndia = (dialCode == '91' || dialCode == 91 || countryCode === 'in');
+
+                // Validate based on country
+                if (isIndia) {
+                    // India: exactly 10 digits
+                    if (localNumber.length !== 10) {
+                        showPhoneError(inputId, 'Indian phone number must be exactly 10 digits.');
+                        return false;
+                    }
+                } else {
+                    // Other countries: 5-15 digits
+                    if (localNumber.length < 5) {
+                        showPhoneError(inputId, 'Phone number must be at least 5 digits.');
+                        return false;
+                    }
+                    if (localNumber.length > 15) {
+                        showPhoneError(inputId, 'Phone number must not exceed 15 digits.');
+                        return false;
+                    }
+                }
+
+                hidePhoneError(inputId);
+                return true;
             }
+
+            // Function to show phone error
+            function showPhoneError(inputId, message) {
+                var input = document.getElementById(inputId);
+                if (!input) return;
+                
+                // Remove existing error message if any
+                var existingError = input.parentNode.querySelector('.' + inputId + '_phone_error');
+                if (existingError) {
+                    existingError.remove();
+                }
+                
+                var errorDiv = document.createElement('div');
+                errorDiv.className = inputId + '_phone_error field-error';
+                errorDiv.style.cssText = 'color: red; font-size: 12px; margin-top: 5px;';
+                errorDiv.textContent = message;
+                input.parentNode.appendChild(errorDiv);
+                input.style.borderColor = '#f00';
+            }
+
+            // Function to hide phone error
+            function hidePhoneError(inputId) {
+                var input = document.getElementById(inputId);
+                if (!input) return;
+                
+                var existingError = input.parentNode.querySelector('.' + inputId + '_phone_error');
+                if (existingError) {
+                    existingError.remove();
+                }
+                input.style.borderColor = '';
+            }
+
+            // Add validation on blur for each phone input
+            phoneInputs.forEach(function(phone) {
+                var input = phone.input;
+                var iti = phone.iti;
+                var inputId = input.id;
+
+                // Validate on blur
+                input.addEventListener('blur', function() {
+                    if (input.value.trim() !== '') {
+                        validatePhoneNumber(input, iti, inputId);
+                    } else {
+                        hidePhoneError(inputId);
+                    }
+                });
+
+                // Validate when country changes
+                input.addEventListener('countrychange', function() {
+                    if (input.value.trim() !== '') {
+                        validatePhoneNumber(input, iti, inputId);
+                    } else {
+                        hidePhoneError(inputId);
+                    }
+                });
+            });
 
             // On form submission, concatenate the country code and phone number for each phone input with separator "-"
             $('form').submit(function(e) {
@@ -4105,6 +4300,7 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                 phoneInputs.forEach(function(phone) {
                     var input = phone.input;
                     var iti = phone.iti;
+                    var inputId = input.id;
 
                     if (input.value.trim() !== '') {
                         var dialCode = iti.getSelectedCountryData().dialCode; // Get the country code (e.g., 91)
@@ -4116,16 +4312,13 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                         // Remove all non-numeric characters from the phone number
                         var localNumber = currentValue.replace(/\D+/g, ''); // Removes any non-digit characters including white spaces
 
-                        var fullPhoneNumber = '+' + dialCode + '-' + localNumber; // Concatenate country code with local number using '-'
-
-                        // Validate the full phone number format
-                        if (!isValidPhoneNumber(fullPhoneNumber)) {
-                            alert("Please enter a valid phone number in the format: +countrycode-phonenumber");
-                            input.focus(); // Move focus to the invalid field
+                        // Validate phone number
+                        if (!validatePhoneNumber(input, iti, inputId)) {
                             isValid = false;
                             return false; // Exit the loop if the number is invalid
                         }
 
+                        var fullPhoneNumber = '+' + dialCode + '-' + localNumber; // Concatenate country code with local number using '-'
                         // Replace the input value with the formatted phone number
                         input.value = fullPhoneNumber;
                     }
@@ -4134,6 +4327,12 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                 // If any phone number is invalid, prevent form submission
                 if (!isValid) {
                     e.preventDefault();
+                    alert('Please correct the phone number errors before submitting.');
+                    // Scroll to first error
+                    var firstError = document.querySelector('.field-error');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
                 }
             });
         });
@@ -4599,6 +4798,971 @@ function refreshCaptcha() {
 </script>
 <!-- End RefreshCaptcha -->
 
+<!-- Comprehensive Form Validation Script -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Validation patterns
+    const patterns = {
+        // Name: Letters, spaces, hyphens, apostrophes (for international names like O'Brien, Mary-Jane, etc.)
+        name: /^[A-Za-z\s\-'\.]+$/,
+        // Organization: Letters, numbers, spaces, common punctuation
+        organization: /^[A-Za-z0-9\s\-'\.\(\)&,]+$/,
+        // Address: Alphanumeric, spaces, common address characters
+        address: /^[A-Za-z0-9\s\-'\.\(\)#\/,]+$/,
+        // Designation: Letters, numbers, spaces, common punctuation
+        designation: /^[A-Za-z0-9\s\-'\.\(\)&,]+$/,
+        // Nationality: Letters, spaces, hyphens
+        nationality: /^[A-Za-z\s\-]+$/,
+        // Course/Branch: Letters, numbers, spaces, common punctuation
+        course: /^[A-Za-z0-9\s\-'\.\(\)&,]+$/,
+        // Paper ID: Alphanumeric, hyphens, underscores
+        paperId: /^[A-Za-z0-9\-_]+$/
+    };
+
+    // Error message elements storage
+    const errorMessages = {};
+
+    // Function to create or get error message element
+    function getErrorMessageElement(inputId) {
+        if (!errorMessages[inputId]) {
+            const input = document.getElementById(inputId);
+            if (input) {
+                const errorDiv = document.createElement('div');
+                errorDiv.id = inputId + '_error';
+                errorDiv.className = 'field-error';
+                errorDiv.style.cssText = 'color: red; font-size: 12px; margin-top: 5px; display: none;';
+                input.parentNode.appendChild(errorDiv);
+                errorMessages[inputId] = errorDiv;
+            }
+        }
+        return errorMessages[inputId];
+    }
+
+    // Function to show error
+    function showError(inputId, message) {
+        const errorDiv = getErrorMessageElement(inputId);
+        if (errorDiv) {
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            const input = document.getElementById(inputId);
+            if (input) {
+                input.style.borderColor = '#f00';
+            }
+        }
+    }
+
+    // Function to hide error
+    function hideError(inputId) {
+        const errorDiv = getErrorMessageElement(inputId);
+        if (errorDiv) {
+            errorDiv.style.display = 'none';
+            const input = document.getElementById(inputId);
+            if (input) {
+                input.style.borderColor = '';
+            }
+        }
+    }
+
+    // Validation functions
+    function validateName(inputId, fieldName) {
+        const input = document.getElementById(inputId);
+        if (!input) return true;
+        
+        const value = input.value.trim();
+        if (!value) {
+            if (input.required) {
+                showError(inputId, fieldName + ' is required.');
+                return false;
+            }
+            return true;
+        }
+
+        if (value.length < 2) {
+            showError(inputId, fieldName + ' must be at least 2 characters long.');
+            return false;
+        }
+
+        if (value.length > 50) {
+            showError(inputId, fieldName + ' must not exceed 50 characters.');
+            return false;
+        }
+
+        if (!patterns.name.test(value)) {
+            showError(inputId, fieldName + ' can only contain letters, spaces, hyphens, apostrophes, and periods.');
+            return false;
+        }
+
+        // Check for consecutive special characters
+        if (/[\-']{2,}/.test(value) || /\.{2,}/.test(value)) {
+            showError(inputId, fieldName + ' cannot have consecutive special characters.');
+            return false;
+        }
+
+        hideError(inputId);
+        return true;
+    }
+
+    function validateOrganization(inputId) {
+        const input = document.getElementById(inputId);
+        if (!input) return true;
+        
+        const value = input.value.trim();
+        if (!value) {
+            if (input.required) {
+                showError(inputId, 'Organization name is required.');
+                return false;
+            }
+            return true;
+        }
+
+        if (value.length < 2) {
+            showError(inputId, 'Organization name must be at least 2 characters long.');
+            return false;
+        }
+
+        if (value.length > 100) {
+            showError(inputId, 'Organization name must not exceed 100 characters.');
+            return false;
+        }
+
+        if (!patterns.organization.test(value)) {
+            showError(inputId, 'Organization name contains invalid characters.');
+            return false;
+        }
+
+        hideError(inputId);
+        return true;
+    }
+
+    function validateAddress(inputId) {
+        const input = document.getElementById(inputId);
+        if (!input) return true;
+        
+        const value = input.value.trim();
+        if (!value) {
+            if (input.required) {
+                showError(inputId, 'Address is required.');
+                return false;
+            }
+            return true;
+        }
+
+        if (value.length < 5) {
+            showError(inputId, 'Address must be at least 5 characters long.');
+            return false;
+        }
+
+        if (value.length > 200) {
+            showError(inputId, 'Address must not exceed 200 characters.');
+            return false;
+        }
+
+        if (!patterns.address.test(value)) {
+            showError(inputId, 'Address contains invalid characters.');
+            return false;
+        }
+
+        hideError(inputId);
+        return true;
+    }
+
+    function validateDesignation(inputId) {
+        const input = document.getElementById(inputId);
+        if (!input) return true;
+        
+        const value = input.value.trim();
+        if (!value) {
+            if (input.required) {
+                showError(inputId, 'Designation is required.');
+                return false;
+            }
+            return true;
+        }
+
+        if (value.length < 2) {
+            showError(inputId, 'Designation must be at least 2 characters long.');
+            return false;
+        }
+
+        if (value.length > 100) {
+            showError(inputId, 'Designation must not exceed 100 characters.');
+            return false;
+        }
+
+        if (!patterns.designation.test(value)) {
+            showError(inputId, 'Designation contains invalid characters.');
+            return false;
+        }
+
+        hideError(inputId);
+        return true;
+    }
+
+    function validateNationality(inputId) {
+        const input = document.getElementById(inputId);
+        if (!input) return true;
+        
+        const value = input.value.trim();
+        if (!value) {
+            if (input.required) {
+                showError(inputId, 'Nationality is required.');
+                return false;
+            }
+            return true;
+        }
+
+        if (value.length < 2) {
+            showError(inputId, 'Nationality must be at least 2 characters long.');
+            return false;
+        }
+
+        if (value.length > 50) {
+            showError(inputId, 'Nationality must not exceed 50 characters.');
+            return false;
+        }
+
+        if (!patterns.nationality.test(value)) {
+            showError(inputId, 'Nationality can only contain letters, spaces, and hyphens.');
+            return false;
+        }
+
+        hideError(inputId);
+        return true;
+    }
+
+    function validateCourse(inputId, fieldName) {
+        const input = document.getElementById(inputId);
+        if (!input) return true;
+        
+        const value = input.value.trim();
+        if (!value) {
+            if (input.required) {
+                showError(inputId, fieldName + ' is required.');
+                return false;
+            }
+            return true;
+        }
+
+        if (value.length < 2) {
+            showError(inputId, fieldName + ' must be at least 2 characters long.');
+            return false;
+        }
+
+        if (value.length > 100) {
+            showError(inputId, fieldName + ' must not exceed 100 characters.');
+            return false;
+        }
+
+        if (!patterns.course.test(value)) {
+            showError(inputId, fieldName + ' contains invalid characters.');
+            return false;
+        }
+
+        hideError(inputId);
+        return true;
+    }
+
+    function validatePaperId(inputId) {
+        const input = document.getElementById(inputId);
+        if (!input) return true;
+        
+        const value = input.value.trim();
+        if (!value) {
+            if (input.required) {
+                showError(inputId, 'Paper ID is required.');
+                return false;
+            }
+            return true;
+        }
+
+        if (value.length < 3) {
+            showError(inputId, 'Paper ID must be at least 3 characters long.');
+            return false;
+        }
+
+        if (value.length > 50) {
+            showError(inputId, 'Paper ID must not exceed 50 characters.');
+            return false;
+        }
+
+        if (!patterns.paperId.test(value)) {
+            showError(inputId, 'Paper ID can only contain letters, numbers, hyphens, and underscores.');
+            return false;
+        }
+
+        hideError(inputId);
+        return true;
+    }
+
+    function validateEmail(inputId, fieldName) {
+        const input = document.getElementById(inputId);
+        if (!input) return true;
+        
+        const value = input.value.trim();
+        if (!value) {
+            if (input.required) {
+                showError(inputId, fieldName + ' is required.');
+                return false;
+            }
+            return true;
+        }
+
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(value)) {
+            showError(inputId, 'Please enter a valid email address.');
+            return false;
+        }
+
+        if (value.length > 100) {
+            showError(inputId, 'Email must not exceed 100 characters.');
+            return false;
+        }
+
+        hideError(inputId);
+        return true;
+    }
+
+    function validateZipcode(inputId) {
+        const input = document.getElementById(inputId);
+        if (!input) return true;
+        
+        const value = input.value.trim();
+        if (!value) {
+            if (input.required) {
+                showError(inputId, 'Postal/ZIP code is required.');
+                return false;
+            }
+            return true;
+        }
+
+        // Check if it's India (6 digits only)
+        const country = document.getElementById('country');
+        const cit = '<?php echo isset($cit) ? htmlspecialchars($cit, ENT_QUOTES, 'UTF-8') : ''; ?>';
+        const isIndia = (cit === 'ind' || (country && country.value === 'India'));
+        
+        if (isIndia) {
+            // India: 6 digits only
+            if (!/^\d{6}$/.test(value)) {
+                showError(inputId, 'Indian PIN code must be exactly 6 digits.');
+                return false;
+            }
+        } else {
+            // International: 2-15 characters, alphanumeric, spaces, and hyphens
+            if (value.length < 2) {
+                showError(inputId, 'Postal code must be at least 2 characters long.');
+                return false;
+            }
+            
+            if (value.length > 15) {
+                showError(inputId, 'Postal code must not exceed 15 characters.');
+                return false;
+            }
+            
+            // Allow letters, numbers, spaces, and hyphens
+            if (!/^[A-Za-z0-9\-\s]+$/.test(value)) {
+                showError(inputId, 'Postal code can only contain letters, numbers, spaces, and hyphens.');
+                return false;
+            }
+        }
+
+        hideError(inputId);
+        return true;
+    }
+
+    // Add validation to all name fields (firstname1-7, lastname1-7)
+    for (let i = 1; i <= 7; i++) {
+        const firstNameId = 'firstname' + i;
+        const lastNameId = 'lastname' + i;
+        
+        const firstNameInput = document.getElementById(firstNameId);
+        const lastNameInput = document.getElementById(lastNameId);
+        
+        if (firstNameInput) {
+            firstNameInput.addEventListener('blur', function() {
+                validateName(firstNameId, 'First name');
+            });
+            firstNameInput.addEventListener('input', function() {
+                if (this.value.trim()) {
+                    // Real-time validation - only show error if there's content
+                    validateName(firstNameId, 'First name');
+                } else {
+                    hideError(firstNameId);
+                }
+            });
+        }
+        
+        if (lastNameInput) {
+            lastNameInput.addEventListener('blur', function() {
+                validateName(lastNameId, 'Last name');
+            });
+            lastNameInput.addEventListener('input', function() {
+                if (this.value.trim()) {
+                    validateName(lastNameId, 'Last name');
+                } else {
+                    hideError(lastNameId);
+                }
+            });
+        }
+    }
+
+    // Validate organization name
+    const orgInput = document.getElementById('org');
+    if (orgInput) {
+        orgInput.addEventListener('blur', function() {
+            validateOrganization('org');
+        });
+        orgInput.addEventListener('input', function() {
+            if (this.value.trim()) {
+                validateOrganization('org');
+            } else {
+                hideError('org');
+            }
+        });
+    }
+
+    // Validate address
+    const addressInput = document.getElementById('address');
+    if (addressInput) {
+        addressInput.addEventListener('blur', function() {
+            validateAddress('address');
+        });
+        addressInput.addEventListener('input', function() {
+            if (this.value.trim()) {
+                validateAddress('address');
+            } else {
+                hideError('address');
+            }
+        });
+    }
+
+    // Validate nationality
+    const nationalityInput = document.getElementById('nationality');
+    if (nationalityInput) {
+        nationalityInput.addEventListener('blur', function() {
+            validateNationality('nationality');
+        });
+        nationalityInput.addEventListener('input', function() {
+            if (this.value.trim()) {
+                validateNationality('nationality');
+            } else {
+                hideError('nationality');
+            }
+        });
+    }
+
+    // Validate designation fields (designation1-7)
+    for (let i = 1; i <= 7; i++) {
+        const designationId = 'designation' + i;
+        const designationInput = document.getElementById(designationId);
+        
+        if (designationInput) {
+            designationInput.addEventListener('blur', function() {
+                validateDesignation(designationId);
+            });
+            designationInput.addEventListener('input', function() {
+                if (this.value.trim()) {
+                    validateDesignation(designationId);
+                } else {
+                    hideError(designationId);
+                }
+            });
+        }
+    }
+
+    // Validate course and branch
+    const courseInput = document.getElementById('course1');
+    const branchInput = document.getElementById('branch1');
+    
+    if (courseInput) {
+        courseInput.addEventListener('blur', function() {
+            validateCourse('course1', 'Course');
+        });
+        courseInput.addEventListener('input', function() {
+            if (this.value.trim()) {
+                validateCourse('course1', 'Course');
+            } else {
+                hideError('course1');
+            }
+        });
+    }
+    
+    if (branchInput) {
+        branchInput.addEventListener('blur', function() {
+            validateCourse('branch1', 'Branch');
+        });
+        branchInput.addEventListener('input', function() {
+            if (this.value.trim()) {
+                validateCourse('branch1', 'Branch');
+            } else {
+                hideError('branch1');
+            }
+        });
+    }
+
+    // Validate paper ID
+    const paperIdInput = document.getElementById('paper_id');
+    if (paperIdInput) {
+        paperIdInput.addEventListener('blur', function() {
+            validatePaperId('paper_id');
+        });
+        paperIdInput.addEventListener('input', function() {
+            if (this.value.trim()) {
+                validatePaperId('paper_id');
+            } else {
+                hideError('paper_id');
+            }
+        });
+    }
+
+    // Validate email fields (email1-7, contactPersonEmail)
+    for (let i = 1; i <= 7; i++) {
+        const emailId = 'email' + i;
+        const emailInput = document.getElementById(emailId);
+        
+        if (emailInput) {
+            emailInput.addEventListener('blur', function() {
+                validateEmail(emailId, 'Email');
+            });
+            emailInput.addEventListener('input', function() {
+                if (this.value.trim()) {
+                    validateEmail(emailId, 'Email');
+                } else {
+                    hideError(emailId);
+                }
+            });
+        }
+    }
+
+    // Validate contact person email
+    const contactPersonEmailInput = document.getElementById('contactPersonEmail');
+    if (contactPersonEmailInput) {
+        contactPersonEmailInput.addEventListener('blur', function() {
+            validateEmail('contactPersonEmail', 'Contact person email');
+        });
+        contactPersonEmailInput.addEventListener('input', function() {
+            if (this.value.trim()) {
+                validateEmail('contactPersonEmail', 'Contact person email');
+            } else {
+                hideError('contactPersonEmail');
+            }
+        });
+    }
+
+    // Validate contact person name
+    const contactPersonNameInput = document.getElementById('contactPersonName');
+    if (contactPersonNameInput) {
+        contactPersonNameInput.addEventListener('blur', function() {
+            validateName('contactPersonName', 'Contact person name');
+        });
+        contactPersonNameInput.addEventListener('input', function() {
+            if (this.value.trim()) {
+                validateName('contactPersonName', 'Contact person name');
+            } else {
+                hideError('contactPersonName');
+            }
+        });
+    }
+
+    // Validate invoice address
+    const invoiceAddressInput = document.getElementById('invoiceAddress');
+    if (invoiceAddressInput) {
+        invoiceAddressInput.addEventListener('blur', function() {
+            validateAddress('invoiceAddress');
+        });
+        invoiceAddressInput.addEventListener('input', function() {
+            if (this.value.trim()) {
+                validateAddress('invoiceAddress');
+            } else {
+                hideError('invoiceAddress');
+            }
+        });
+    }
+
+    // Validate zipcode/postal code
+    const zipcodeInput = document.getElementById('zipcode');
+    if (zipcodeInput) {
+        zipcodeInput.addEventListener('blur', function() {
+            validateZipcode('zipcode');
+        });
+        zipcodeInput.addEventListener('input', function() {
+            if (this.value.trim()) {
+                validateZipcode('zipcode');
+            } else {
+                hideError('zipcode');
+            }
+        });
+        
+        // Also validate when country changes
+        const countrySelect = document.getElementById('country');
+        if (countrySelect) {
+            countrySelect.addEventListener('change', function() {
+                if (zipcodeInput.value.trim()) {
+                    validateZipcode('zipcode');
+                }
+            });
+        }
+    }
+
+    // Form submission validation
+    const form = document.getElementById('reg_registration_form_1');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+
+            // Validate all visible name fields
+            for (let i = 1; i <= 7; i++) {
+                const firstNameId = 'firstname' + i;
+                const lastNameId = 'lastname' + i;
+                const firstNameInput = document.getElementById(firstNameId);
+                const lastNameInput = document.getElementById(lastNameId);
+                
+                if (firstNameInput && firstNameInput.offsetParent !== null) {
+                    if (!validateName(firstNameId, 'First name')) {
+                        isValid = false;
+                    }
+                }
+                if (lastNameInput && lastNameInput.offsetParent !== null) {
+                    if (!validateName(lastNameId, 'Last name')) {
+                        isValid = false;
+                    }
+                }
+            }
+
+            // Validate organization
+            if (orgInput && orgInput.offsetParent !== null) {
+                if (!validateOrganization('org')) {
+                    isValid = false;
+                }
+            }
+
+            // Validate address
+            if (addressInput && addressInput.offsetParent !== null) {
+                if (!validateAddress('address')) {
+                    isValid = false;
+                }
+            }
+
+            // Validate nationality
+            if (nationalityInput && nationalityInput.offsetParent !== null) {
+                if (!validateNationality('nationality')) {
+                    isValid = false;
+                }
+            }
+
+            // Validate visible designation fields
+            for (let i = 1; i <= 7; i++) {
+                const designationId = 'designation' + i;
+                const designationInput = document.getElementById(designationId);
+                if (designationInput && designationInput.offsetParent !== null && designationInput.required) {
+                    if (!validateDesignation(designationId)) {
+                        isValid = false;
+                    }
+                }
+            }
+
+            // Validate course and branch if visible
+            if (courseInput && courseInput.offsetParent !== null && courseInput.required) {
+                if (!validateCourse('course1', 'Course')) {
+                    isValid = false;
+                }
+            }
+            if (branchInput && branchInput.offsetParent !== null && branchInput.required) {
+                if (!validateCourse('branch1', 'Branch')) {
+                    isValid = false;
+                }
+            }
+
+            // Validate paper ID if visible
+            if (paperIdInput && paperIdInput.offsetParent !== null) {
+                if (!validatePaperId('paper_id')) {
+                    isValid = false;
+                }
+            }
+
+            // Validate visible email fields
+            for (let i = 1; i <= 7; i++) {
+                const emailId = 'email' + i;
+                const emailInput = document.getElementById(emailId);
+                if (emailInput && emailInput.offsetParent !== null) {
+                    if (!validateEmail(emailId, 'Email')) {
+                        isValid = false;
+                    }
+                }
+            }
+
+            // Validate contact person fields if visible
+            if (contactPersonNameInput && contactPersonNameInput.offsetParent !== null) {
+                if (!validateName('contactPersonName', 'Contact person name')) {
+                    isValid = false;
+                }
+            }
+            if (contactPersonEmailInput && contactPersonEmailInput.offsetParent !== null) {
+                if (!validateEmail('contactPersonEmail', 'Contact person email')) {
+                    isValid = false;
+                }
+            }
+            if (invoiceAddressInput && invoiceAddressInput.offsetParent !== null) {
+                if (!validateAddress('invoiceAddress')) {
+                    isValid = false;
+                }
+            }
+
+            // Validate zipcode if visible
+            if (zipcodeInput && zipcodeInput.offsetParent !== null) {
+                if (!validateZipcode('zipcode')) {
+                    isValid = false;
+                }
+            }
+
+            // Validate IEEE member radio buttons if section is visible
+            const ieeeSection = document.getElementById('del_type');
+            if (ieeeSection && ieeeSection.offsetParent !== null) {
+                const ieeeMemberRadios = form.querySelectorAll('input[name="ieee_member"]');
+                let ieeeMemberSelected = false;
+                ieeeMemberRadios.forEach(function(radio) {
+                    if (radio.checked) {
+                        ieeeMemberSelected = true;
+                    }
+                });
+                if (!ieeeMemberSelected) {
+                    isValid = false;
+                    let errorDiv = ieeeSection.querySelector('.ieee-member-error');
+                    if (!errorDiv) {
+                        errorDiv = document.createElement('div');
+                        errorDiv.className = 'ieee-member-error field-error';
+                        errorDiv.style.cssText = 'color: red; font-size: 12px; margin-top: 5px;';
+                        ieeeSection.appendChild(errorDiv);
+                    }
+                    errorDiv.textContent = 'Please select whether you are an IEEE member.';
+                    errorDiv.style.display = 'block';
+                } else {
+                    const errorDiv = ieeeSection.querySelector('.ieee-member-error');
+                    if (errorDiv) {
+                        errorDiv.style.display = 'none';
+                    }
+                }
+            }
+
+            // Validate all required select dropdowns
+            const allSelects = form.querySelectorAll('select[required]');
+            allSelects.forEach(function(select) {
+                if (select.offsetParent !== null && !select.value) {
+                    isValid = false;
+                    const selectId = select.id || select.name;
+                    showError(selectId, 'This field is required.');
+                }
+            });
+
+            // Validate all required input fields
+            const allInputs = form.querySelectorAll('input[required]:not([type="hidden"]):not([type="checkbox"]):not([type="radio"])');
+            allInputs.forEach(function(input) {
+                if (input.offsetParent !== null && !input.value.trim()) {
+                    isValid = false;
+                    const inputId = input.id || input.name;
+                    const fieldName = input.placeholder || input.name || 'This field';
+                    showError(inputId, fieldName + ' is required.');
+                }
+            });
+
+            if (!isValid) {
+                e.preventDefault();
+                alert('Please correct the errors in the form before submitting.');
+                // Scroll to first error
+                const firstError = document.querySelector('.field-error[style*="block"]');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                return false;
+            }
+        });
+    }
+
+    // Function to manage required attributes for visible/hidden fields (global)
+    window.manageRequiredAttributes = function() {
+        // List of fields that should never be required (promo code, hidden fields, checkboxes that are optional)
+        const excludedFields = ['promoCode', 'promoCodeHidden', 'vercode', 'test', 'del', 'cit', 'csrf_token', 'curr', 
+                                'food_checkbox', 'kit_checkbox', 'food_hidden', 'kit_hidden', 'food_amount_hidden', 'kit_amount_hidden',
+                                'exhibition_day_all', 'time_slot_hidden'];
+        
+        // Get all form inputs, selects, and textareas
+        const form = document.getElementById('reg_registration_form_1');
+        if (!form) return;
+        
+        const allFields = form.querySelectorAll('input, select, textarea');
+        
+        allFields.forEach(function(field) {
+            // Skip excluded fields
+            if (excludedFields.includes(field.id) || excludedFields.includes(field.name)) {
+                return;
+            }
+            
+            // Skip hidden input types
+            if (field.type === 'hidden') {
+                return;
+            }
+            
+            // Skip checkboxes (they have their own validation logic)
+            if (field.type === 'checkbox') {
+                return;
+            }
+            
+            // Handle radio buttons for IEEE member - make them required when section is visible
+            if (field.type === 'radio' && (field.name === 'ieee_member')) {
+                const ieeeSection = document.getElementById('del_type');
+                if (ieeeSection) {
+                    const isIEEESectionVisible = ieeeSection.offsetParent !== null && 
+                                                window.getComputedStyle(ieeeSection).display !== 'none';
+                    if (isIEEESectionVisible) {
+                        // Radio buttons in a group - at least one must be selected
+                        // We'll handle this in form validation, but ensure the group is required
+                        const radioGroup = form.querySelectorAll('input[name="' + field.name + '"]');
+                        radioGroup.forEach(function(radio) {
+                            if (!radio.hasAttribute('required')) {
+                                // For radio groups, we mark them as required but validation is done differently
+                                radio.setAttribute('data-required-group', 'true');
+                            }
+                        });
+                    } else {
+                        // Remove required when section is hidden
+                        const radioGroup = form.querySelectorAll('input[name="' + field.name + '"]');
+                        radioGroup.forEach(function(radio) {
+                            radio.removeAttribute('data-required-group');
+                        });
+                    }
+                }
+                return;
+            }
+            
+            // Skip other radio buttons (they have their own validation logic)
+            if (field.type === 'radio') {
+                return;
+            }
+            
+            // Check if field is visible
+            const isVisible = field.offsetParent !== null && 
+                            window.getComputedStyle(field).display !== 'none' &&
+                            window.getComputedStyle(field).visibility !== 'hidden';
+            
+            // Check if parent container is visible
+            let parentVisible = true;
+            let parent = field.parentElement;
+            while (parent && parent !== form) {
+                const parentStyle = window.getComputedStyle(parent);
+                if (parentStyle.display === 'none' || parentStyle.visibility === 'hidden') {
+                    parentVisible = false;
+                    break;
+                }
+                parent = parent.parentElement;
+            }
+            
+            const shouldBeRequired = isVisible && parentVisible;
+            
+            // Set or remove required attribute
+            if (shouldBeRequired) {
+                // Special case: id_card1 should only be required if visible and sector is Student
+                if (field.id === 'id_card1') {
+                    const sectorDropdown = document.getElementById('sector');
+                    if (sectorDropdown && sectorDropdown.value === 'Student') {
+                        if (!field.hasAttribute('required')) {
+                            field.setAttribute('required', 'required');
+                        }
+                    } else {
+                        field.removeAttribute('required');
+                    }
+                }
+                // Special case: designation fields - check if sector is Student
+                else if (field.id && field.id.startsWith('designation')) {
+                    const sectorDropdown = document.getElementById('sector');
+                    if (sectorDropdown && sectorDropdown.value === 'Student') {
+                        field.removeAttribute('required');
+                    } else {
+                        if (!field.hasAttribute('required')) {
+                            field.setAttribute('required', 'required');
+                        }
+                    }
+                }
+                // Special case: course and branch - only required if sector is not Professor/Faculty or Others
+                else if (field.id === 'course1' || field.id === 'branch1') {
+                    const sectorDropdown = document.getElementById('sector');
+                    if (sectorDropdown && (sectorDropdown.value === 'Professor/Faculty' || sectorDropdown.value === 'Others')) {
+                        field.removeAttribute('required');
+                    } else {
+                        if (!field.hasAttribute('required')) {
+                            field.setAttribute('required', 'required');
+                        }
+                    }
+                }
+                // Default: set required for all visible fields
+                else {
+                    if (!field.hasAttribute('required')) {
+                        field.setAttribute('required', 'required');
+                    }
+                }
+            } else {
+                // Field is hidden, remove required
+                if (field.hasAttribute('required')) {
+                    field.removeAttribute('required');
+                }
+            }
+        });
+    }
+
+    // Run on page load and after a delay to ensure all DOM is ready
+    manageRequiredAttributes();
+    setTimeout(manageRequiredAttributes, 500);
+    setTimeout(manageRequiredAttributes, 1000);
+
+    // Observe DOM changes to handle dynamically shown/hidden fields
+    const observer = new MutationObserver(function(mutations) {
+        let shouldUpdate = false;
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'attributes' && 
+                (mutation.attributeName === 'style' || mutation.attributeName === 'class')) {
+                shouldUpdate = true;
+            }
+            if (mutation.type === 'childList') {
+                shouldUpdate = true;
+            }
+        });
+        if (shouldUpdate) {
+            setTimeout(manageRequiredAttributes, 100);
+        }
+    });
+
+    // Observe the form for changes
+    const form = document.getElementById('reg_registration_form_1');
+    if (form) {
+        observer.observe(form, {
+            attributes: true,
+            childList: true,
+            subtree: true,
+            attributeFilter: ['style', 'class']
+        });
+    }
+
+    // Also run when specific toggle functions are called
+    // Override common toggle functions to update required attributes
+    const originalShowAttendeeFields = window.showAttendeeFields;
+    if (originalShowAttendeeFields) {
+        window.showAttendeeFields = function() {
+            originalShowAttendeeFields();
+            setTimeout(manageRequiredAttributes, 100);
+        };
+    }
+
+    // Update required attributes when specific fields are toggled
+    document.addEventListener('change', function(e) {
+        // Check if it's a field that might show/hide other fields
+        if (e.target.id === 'sector' || 
+            e.target.id === 'pass_type' || 
+            e.target.id === 'gstDropdown' ||
+            e.target.id === 'exhibition_day' ||
+            e.target.name === 'ieee_member') {
+            setTimeout(manageRequiredAttributes, 100);
+        }
+    });
+});
+</script>
 
     <!-- END PAGE LEVEL SCRIPTS -->
 </body>
