@@ -3592,9 +3592,11 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                         <label class="col-md-3 control-label">Phone<span class=" dips-required"> *
                                             </span></label>
                                         <div class="col-md-6">
-                                            <input type="tel" class="form-control" id="contactPersonPhone"
-                                                name="contactPersonPhone" maxlength="10" placeholder="Enter Phone Number"
-                                                value="<?= $_SESSION['contactPersonPhone'] ?? '' ?>">
+                                            <input type="number" class="form-control" id="contactPersonPhone"
+                                                name="contactPersonPhone" maxlength="10" min="0" max="9999999999"
+                                                placeholder="Enter Phone Number"
+                                                value="<?= isset($_SESSION['contactPersonPhone']) ? preg_replace('/\D/', '', $_SESSION['contactPersonPhone']) : '' ?>"
+                                                oninput="this.value = this.value.replace(/[^0-9]/g,'').slice(0,10);">
                                         </div>
                                     </div>
                                 </div>

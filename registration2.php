@@ -432,17 +432,6 @@ if (!empty($pass_type) && ($pass_type == '2-Day Delegate Pass' || $pass_type == 
 }
 $org_reg_type = htmlspecialchars($_POST['org_reg_type'], ENT_QUOTES, 'UTF-8');
 
-// if ($org_reg_type == 'Investors' || $org_reg_type == 'Institutional Investor') {
-// 	if ($cata == 'Gold Delegate Pass') {
-// 		$cata = 'Investor Gold Pass';
-// 	} else if ($cata == 'Silver Delegate Pass') {
-// 		$cata = 'Investor Silver Pass';
-// 	} else if ($cata == 'Bronze Delegate Pass') {
-// 		$cata = 'Investor Bronze Pass';
-// 	}
-// }
-
-
 
 // if dele != next gen hpc experience and dele != author then days must be day1 or day2 else day day2 day3 day4
 // Skip validation if pass_type is Technical Program + Workshop + Tutorial + Exhibition
