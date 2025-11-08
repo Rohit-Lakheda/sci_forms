@@ -4127,7 +4127,7 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
             }
 
             // Function to validate the phone number based on country
-            function validatePhoneNumber(input, iti, inputId) {
+            function validatePhoneNumber(input, iti, inputId, showErrorOnEmpty) {
                 var dialCode = iti.getSelectedCountryData().dialCode; // Get the country code (e.g., 91)
                 var countryCode = iti.getSelectedCountryData().iso2; // Get ISO2 country code (e.g., 'in')
                 
@@ -4138,8 +4138,19 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                 // Remove all non-numeric characters from the phone number
                 var localNumber = currentValue.replace(/\D+/g, ''); // Removes any non-digit characters including white spaces
 
-                // Check if it's India (dialCode 91 or countryCode 'in')
-                var isIndia = (dialCode == '91' || dialCode == 91 || countryCode === 'in');
+                // Check if field is empty
+                if (!localNumber || localNumber.length === 0) {
+                    if (showErrorOnEmpty && input.required) {
+                        showPhoneError(inputId, 'Phone number is required.');
+                        return false;
+                    }
+                    hidePhoneError(inputId);
+                    return true; // Empty is valid if not required
+                }
+
+                // Check if it's India (dialCode 91 or countryCode 'in' or +91 in the value)
+                var isIndia = (dialCode == '91' || dialCode == 91 || countryCode === 'in' || 
+                              input.value.includes('+91') || input.value.includes('91-'));
 
                 // Validate based on country
                 if (isIndia) {
@@ -4149,7 +4160,7 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                         return false;
                     }
                 } else {
-                    // Other countries: 5-15 digits
+                    // Other countries: at least 5 digits and max 15 digits
                     if (localNumber.length < 5) {
                         showPhoneError(inputId, 'Phone number must be at least 5 digits.');
                         return false;
@@ -4201,20 +4212,24 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                 var iti = phone.iti;
                 var inputId = input.id;
 
-                // Validate on blur
+                // Validate on blur - always validate, show error if required field is empty
                 input.addEventListener('blur', function() {
-                    if (input.value.trim() !== '') {
-                        validatePhoneNumber(input, iti, inputId);
-                    } else {
-                        hidePhoneError(inputId);
-                    }
+                    validatePhoneNumber(input, iti, inputId, true);
                 });
 
                 // Validate when country changes
                 input.addEventListener('countrychange', function() {
                     if (input.value.trim() !== '') {
-                        validatePhoneNumber(input, iti, inputId);
+                        validatePhoneNumber(input, iti, inputId, false);
                     } else {
+                        hidePhoneError(inputId);
+                    }
+                });
+
+                // Also validate on input change for real-time feedback (optional)
+                input.addEventListener('input', function() {
+                    // Clear error if user is typing
+                    if (input.value.trim() === '') {
                         hidePhoneError(inputId);
                     }
                 });
@@ -4241,7 +4256,7 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                         var localNumber = currentValue.replace(/\D+/g, ''); // Removes any non-digit characters including white spaces
 
                         // Validate phone number
-                        if (!validatePhoneNumber(input, iti, inputId)) {
+                        if (!validatePhoneNumber(input, iti, inputId, true)) {
                             isValid = false;
                             return false; // Exit the loop if the number is invalid
                         }
