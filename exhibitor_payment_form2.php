@@ -310,12 +310,8 @@ if ($assoc_nm === '') {
 if (isset($_FILES['ci_certf']['name']) && !empty($_FILES['ci_certf']['name'])) {
 
 	$ci_certf_UploadPath = 'photo/';
-	//while uploading file, if path is not wriatable change the permission of the directory to 777
-	if (!is_writable($ci_certf_UploadPath)) {
-		chmod($ci_certf_UploadPath, 0777);
-	}
 
-	// Check for upload errors
+	// Check for upload errors first
 	if ($_FILES['ci_certf']['error'] !== UPLOAD_ERR_OK) {
 		$error_message = 'Unknown upload error';
 		switch ($_FILES['ci_certf']['error']) {
@@ -364,11 +360,24 @@ if (isset($_FILES['ci_certf']['name']) && !empty($_FILES['ci_certf']['name'])) {
 		exit;
 	}
 
-	$ci_certf_UploadPath = 'photo/';
-
+	// Create directory if it doesn't exist
 	if (!file_exists($ci_certf_UploadPath)) {
 		if (!mkdir($ci_certf_UploadPath, 0777, true)) {
 			echo "<script language='javascript'>alert('Error: Unable to create upload directory. Please contact admin.');</script>";
+			echo "<script language='javascript'>window.location='exhibitor_payment_form.php?assoc_nm=$assoc_nm';</script>";
+			exit;
+		}
+		// On Windows, chmod may not work as expected, but we try anyway for Unix/Linux compatibility
+		@chmod($ci_certf_UploadPath, 0777);
+	}
+
+	// Verify directory is writable after creation
+	if (!is_writable($ci_certf_UploadPath)) {
+		// Try to set permissions (works on Unix/Linux, may not work on Windows)
+		@chmod($ci_certf_UploadPath, 0777);
+		// Check again after attempting to change permissions
+		if (!is_writable($ci_certf_UploadPath)) {
+			echo "<script language='javascript'>alert('Error: Upload directory is not writable. Please contact administrator to set proper permissions on the photo/ directory.');</script>";
 			echo "<script language='javascript'>window.location='exhibitor_payment_form.php?assoc_nm=$assoc_nm';</script>";
 			exit;
 		}
@@ -390,12 +399,16 @@ if (isset($_FILES['ci_certf']['name']) && !empty($_FILES['ci_certf']['name'])) {
 
 	if (move_uploaded_file($_FILES['ci_certf']['tmp_name'], $filePath)) {
 		// File uploaded successfully
+		// Set file permissions (optional, for security)
+		@chmod($filePath, 0644);
 	} else {
 		$error_details = '';
 		if (!is_writable($ci_certf_UploadPath)) {
 			$error_details = ' Upload directory is not writable.';
 		} elseif (!is_uploaded_file($_FILES['ci_certf']['tmp_name'])) {
 			$error_details = ' Invalid file upload.';
+		} else {
+			$error_details = ' Unable to move uploaded file.';
 		}
 		echo "<script language='javascript'>alert('Error in Uploading Company Registration Certificate$error_details Please try again or contact admin');</script>";
 		echo "<script language='javascript'>window.location='exhibitor_payment_form.php?assoc_nm=$assoc_nm';</script>";
