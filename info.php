@@ -5,7 +5,7 @@ session_start();
 
 include 'csrf_token.php';
 // session_destroy();
-?>
+?> 
 <style>
     .flag-icon {
         width: 20px;
