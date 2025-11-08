@@ -757,11 +757,6 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                 otherSectorInput.required = false;
                                                 otherSectorInput.value = ''; // Clear the input when hidden
                                             }
-                                            
-                                            // Update required attributes
-                                            if (typeof window.manageRequiredAttributes === 'function') {
-                                                setTimeout(window.manageRequiredAttributes, 100);
-                                            }
                                         }
                                     </script>
 
@@ -823,11 +818,6 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                         if (noRadio) noRadio.checked = false;
                                                     }
                                                 }
-                                                
-                                                // Update required attributes
-                                                if (typeof window.manageRequiredAttributes === 'function') {
-                                                    setTimeout(window.manageRequiredAttributes, 100);
-                                                }
                                             }
                                             
                                             // Initialize IEEE section visibility on page load
@@ -835,32 +825,27 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                             
                                             // Only add event listener if pass_type dropdown exists
                                             if (passTypeDropdown) {
-                                            passTypeDropdown.addEventListener('change', function() {
-                                                if (exhibitionDayGroup) {
-                                                    if (this.value === 'exhibition' || this.value === 'workshop') {
-                                                        exhibitionDayGroup.style.display = 'block';
-                                                        const exhibitionDay = document.getElementById('exhibition_day');
-                                                        if (exhibitionDay) {
-                                                            exhibitionDay.required = true;
-                                                        }
-                                                    } else {
-                                                        exhibitionDayGroup.style.display = 'none';
-                                                        const exhibitionDay = document.getElementById('exhibition_day');
-                                                        if (exhibitionDay) {
-                                                            exhibitionDay.value = ''; // Reset selection
-                                                            exhibitionDay.required = false;
+                                                passTypeDropdown.addEventListener('change', function() {
+                                                    if (exhibitionDayGroup) {
+                                                        if (this.value === 'exhibition' || this.value === 'workshop') {
+                                                            exhibitionDayGroup.style.display = 'block';
+                                                            const exhibitionDay = document.getElementById('exhibition_day');
+                                                            if (exhibitionDay) {
+                                                                exhibitionDay.required = true;
+                                                            }
+                                                        } else {
+                                                            exhibitionDayGroup.style.display = 'none';
+                                                            const exhibitionDay = document.getElementById('exhibition_day');
+                                                            if (exhibitionDay) {
+                                                                exhibitionDay.value = ''; // Reset selection
+                                                                exhibitionDay.required = false;
+                                                            }
                                                         }
                                                     }
-                                                }
-                                                
-                                                // Toggle IEEE section based on pass type
-                                                toggleIEEESection();
-                                                
-                                                // Update required attributes
-                                                if (typeof window.manageRequiredAttributes === 'function') {
-                                                    setTimeout(window.manageRequiredAttributes, 100);
-                                                }
-                                            });
+                                                    
+                                                    // Toggle IEEE section based on pass type
+                                                    toggleIEEESection();
+                                                });
                                             }
                                         });
                                     </script>
@@ -1040,11 +1025,6 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                     const noRadio = document.getElementById('no1');
                                                     if (yesRadio) yesRadio.checked = false;
                                                     if (noRadio) noRadio.checked = false;
-                                                }
-                                                
-                                                // Update required attributes
-                                                if (typeof window.manageRequiredAttributes === 'function') {
-                                                    setTimeout(window.manageRequiredAttributes, 100);
                                                 }
                                             }
                                         }
@@ -1597,16 +1577,9 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                             } else if (foodKitGroup) {
                                                 foodKitGroup.style.display = 'none';
                                                 // Reset food/kit values when hidden
-                                                const foodCheckbox = document.getElementById('food_checkbox');
-                                                const kitCheckbox = document.getElementById('kit_checkbox');
-                                                if (foodCheckbox) foodCheckbox.checked = false;
-                                                if (kitCheckbox) kitCheckbox.checked = false;
+                                                document.getElementById('food_checkbox').checked = false;
+                                                document.getElementById('kit_checkbox').checked = false;
                                                 updateFoodKitValues();
-                                            }
-                                            
-                                            // Update required attributes
-                                            if (typeof window.manageRequiredAttributes === 'function') {
-                                                setTimeout(window.manageRequiredAttributes, 100);
                                             }
                                         }
 
@@ -1647,11 +1620,6 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                         if (yesRadioShow) yesRadioShow.checked = false;
                                                         if (noRadioShow) noRadioShow.checked = false;
                                                     }
-                                                    
-                                                    // Update required attributes
-                                                    if (typeof window.manageRequiredAttributes === 'function') {
-                                                        setTimeout(window.manageRequiredAttributes, 100);
-                                                    }
                                                 }
                                                 
                                                 // Toggle time slot selection - only show for workshop (2-Day Delegate Pass)
@@ -1666,11 +1634,6 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                     passTimeSlotGroup.style.display = 'none';
                                                     tablesContainer.innerHTML = '';
                                                     if (timeSlotHidden) timeSlotHidden.value = '';
-                                                }
-                                                
-                                                // Update required attributes after toggling time slot group
-                                                if (typeof window.manageRequiredAttributes === 'function') {
-                                                    setTimeout(window.manageRequiredAttributes, 100);
                                                 }
                                             });
                                         }
@@ -1708,11 +1671,6 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                     passTimeSlotGroup.style.display = 'none';
                                                     tablesContainer.innerHTML = '';
                                                     if (timeSlotHidden) timeSlotHidden.value = '';
-                                                }
-                                                
-                                                // Update required attributes
-                                                if (typeof window.manageRequiredAttributes === 'function') {
-                                                    setTimeout(window.manageRequiredAttributes, 100);
                                                 }
                                             });
                                         }
@@ -1929,11 +1887,6 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                         options[i].style.display = 'block';
                                                     }
                                                 }
-                                            }
-                                            
-                                            // Update required attributes
-                                            if (typeof window.manageRequiredAttributes === 'function') {
-                                                setTimeout(window.manageRequiredAttributes, 100);
                                             }
                                         }
 
@@ -2710,11 +2663,6 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                        if (courseReqSpan) courseReqSpan.style.display = '';
                                                        if (branchReqSpan) branchReqSpan.style.display = '';
                                                    }
-                                                   
-                                                   // Update required attributes
-                                                   if (typeof window.manageRequiredAttributes === 'function') {
-                                                       setTimeout(window.manageRequiredAttributes, 100);
-                                                   }
                                                }
 
                                                document.addEventListener('DOMContentLoaded', function () {
@@ -2777,11 +2725,6 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                 idCardUpload.style.display = 'none';
                                                 idCardInput.required = false;
                                                 idCardInput.value = ''; // Clear the file input
-                                            }
-                                            
-                                            // Update required attributes
-                                            if (typeof window.manageRequiredAttributes === 'function') {
-                                                setTimeout(window.manageRequiredAttributes, 100);
                                             }
                                         }
 
@@ -3913,32 +3856,22 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
     </script>
     <script>
         // Function to toggle visibility of GST fields
-        const gstDropdown = document.getElementById("gstDropdown");
-        if (gstDropdown) {
-            gstDropdown.addEventListener("change", function() {
-                const gstFields = document.getElementById("gstFields");
-                const isRequired = this.value === "Yes";
+        document.getElementById("gstDropdown").addEventListener("change", function() {
+            const gstFields = document.getElementById("gstFields");
+            const isRequired = this.value === "Yes";
 
-                // Toggle visibility of GST fields
-                if (gstFields) {
-                    gstFields.style.display = isRequired ? "block" : "none";
+            // Toggle visibility of GST fields
+            gstFields.style.display = isRequired ? "block" : "none";
 
-                    // Get all input fields inside GST fields
-                    const inputs = gstFields.querySelectorAll("input");
-                    inputs.forEach(input => {
-                        input.required = isRequired; // Set required attribute
-                        if (!isRequired) {
-                            input.value = ""; // Clear the input fields if not required
-                        }
-                    });
-                }
-                
-                // Update required attributes
-                if (typeof window.manageRequiredAttributes === 'function') {
-                    setTimeout(window.manageRequiredAttributes, 100);
+            // Get all input fields inside GST fields
+            const inputs = gstFields.querySelectorAll("input");
+            inputs.forEach(input => {
+                input.required = isRequired; // Set required attribute
+                if (!isRequired) {
+                    input.value = ""; // Clear the input fields if not required
                 }
             });
-        }
+        });
     </script>
 
 
@@ -3995,11 +3928,6 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                         }
                     });
                 }
-            }
-            
-            // Update required attributes after showing/hiding fields
-            if (typeof window.manageRequiredAttributes === 'function') {
-                setTimeout(window.manageRequiredAttributes, 100);
             }
         }
 
@@ -5514,56 +5442,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
 
-            // Validate IEEE member radio buttons if section is visible
-            const ieeeSection = document.getElementById('del_type');
-            if (ieeeSection && ieeeSection.offsetParent !== null) {
-                const ieeeMemberRadios = form.querySelectorAll('input[name="ieee_member"]');
-                let ieeeMemberSelected = false;
-                ieeeMemberRadios.forEach(function(radio) {
-                    if (radio.checked) {
-                        ieeeMemberSelected = true;
-                    }
-                });
-                if (!ieeeMemberSelected) {
-                    isValid = false;
-                    let errorDiv = ieeeSection.querySelector('.ieee-member-error');
-                    if (!errorDiv) {
-                        errorDiv = document.createElement('div');
-                        errorDiv.className = 'ieee-member-error field-error';
-                        errorDiv.style.cssText = 'color: red; font-size: 12px; margin-top: 5px;';
-                        ieeeSection.appendChild(errorDiv);
-                    }
-                    errorDiv.textContent = 'Please select whether you are an IEEE member.';
-                    errorDiv.style.display = 'block';
-                } else {
-                    const errorDiv = ieeeSection.querySelector('.ieee-member-error');
-                    if (errorDiv) {
-                        errorDiv.style.display = 'none';
-                    }
-                }
-            }
-
-            // Validate all required select dropdowns
-            const allSelects = form.querySelectorAll('select[required]');
-            allSelects.forEach(function(select) {
-                if (select.offsetParent !== null && !select.value) {
-                    isValid = false;
-                    const selectId = select.id || select.name;
-                    showError(selectId, 'This field is required.');
-                }
-            });
-
-            // Validate all required input fields
-            const allInputs = form.querySelectorAll('input[required]:not([type="hidden"]):not([type="checkbox"]):not([type="radio"])');
-            allInputs.forEach(function(input) {
-                if (input.offsetParent !== null && !input.value.trim()) {
-                    isValid = false;
-                    const inputId = input.id || input.name;
-                    const fieldName = input.placeholder || input.name || 'This field';
-                    showError(inputId, fieldName + ' is required.');
-                }
-            });
-
             if (!isValid) {
                 e.preventDefault();
                 alert('Please correct the errors in the form before submitting.');
@@ -5576,191 +5454,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
-    // Function to manage required attributes for visible/hidden fields (global)
-    window.manageRequiredAttributes = function() {
-        // List of fields that should never be required (promo code, hidden fields, checkboxes that are optional)
-        const excludedFields = ['promoCode', 'promoCodeHidden', 'vercode', 'test', 'del', 'cit', 'csrf_token', 'curr', 
-                                'food_checkbox', 'kit_checkbox', 'food_hidden', 'kit_hidden', 'food_amount_hidden', 'kit_amount_hidden',
-                                'exhibition_day_all', 'time_slot_hidden'];
-        
-        // Get all form inputs, selects, and textareas
-        const form = document.getElementById('reg_registration_form_1');
-        if (!form) return;
-        
-        const allFields = form.querySelectorAll('input, select, textarea');
-        
-        allFields.forEach(function(field) {
-            // Skip excluded fields
-            if (excludedFields.includes(field.id) || excludedFields.includes(field.name)) {
-                return;
-            }
-            
-            // Skip hidden input types
-            if (field.type === 'hidden') {
-                return;
-            }
-            
-            // Skip checkboxes (they have their own validation logic)
-            if (field.type === 'checkbox') {
-                return;
-            }
-            
-            // Handle radio buttons for IEEE member - make them required when section is visible
-            if (field.type === 'radio' && (field.name === 'ieee_member')) {
-                const ieeeSection = document.getElementById('del_type');
-                if (ieeeSection) {
-                    const isIEEESectionVisible = ieeeSection.offsetParent !== null && 
-                                                window.getComputedStyle(ieeeSection).display !== 'none';
-                    if (isIEEESectionVisible) {
-                        // Radio buttons in a group - at least one must be selected
-                        // We'll handle this in form validation, but ensure the group is required
-                        const radioGroup = form.querySelectorAll('input[name="' + field.name + '"]');
-                        radioGroup.forEach(function(radio) {
-                            if (!radio.hasAttribute('required')) {
-                                // For radio groups, we mark them as required but validation is done differently
-                                radio.setAttribute('data-required-group', 'true');
-                            }
-                        });
-                    } else {
-                        // Remove required when section is hidden
-                        const radioGroup = form.querySelectorAll('input[name="' + field.name + '"]');
-                        radioGroup.forEach(function(radio) {
-                            radio.removeAttribute('data-required-group');
-                        });
-                    }
-                }
-                return;
-            }
-            
-            // Skip other radio buttons (they have their own validation logic)
-            if (field.type === 'radio') {
-                return;
-            }
-            
-            // Check if field is visible
-            const isVisible = field.offsetParent !== null && 
-                            window.getComputedStyle(field).display !== 'none' &&
-                            window.getComputedStyle(field).visibility !== 'hidden';
-            
-            // Check if parent container is visible
-            let parentVisible = true;
-            let parent = field.parentElement;
-            while (parent && parent !== form) {
-                const parentStyle = window.getComputedStyle(parent);
-                if (parentStyle.display === 'none' || parentStyle.visibility === 'hidden') {
-                    parentVisible = false;
-                    break;
-                }
-                parent = parent.parentElement;
-            }
-            
-            const shouldBeRequired = isVisible && parentVisible;
-            
-            // Set or remove required attribute
-            if (shouldBeRequired) {
-                // Special case: id_card1 should only be required if visible and sector is Student
-                if (field.id === 'id_card1') {
-                    const sectorDropdown = document.getElementById('sector');
-                    if (sectorDropdown && sectorDropdown.value === 'Student') {
-                        if (!field.hasAttribute('required')) {
-                            field.setAttribute('required', 'required');
-                        }
-                    } else {
-                        field.removeAttribute('required');
-                    }
-                }
-                // Special case: designation fields - check if sector is Student
-                else if (field.id && field.id.startsWith('designation')) {
-                    const sectorDropdown = document.getElementById('sector');
-                    if (sectorDropdown && sectorDropdown.value === 'Student') {
-                        field.removeAttribute('required');
-                    } else {
-                        if (!field.hasAttribute('required')) {
-                            field.setAttribute('required', 'required');
-                        }
-                    }
-                }
-                // Special case: course and branch - only required if sector is not Professor/Faculty or Others
-                else if (field.id === 'course1' || field.id === 'branch1') {
-                    const sectorDropdown = document.getElementById('sector');
-                    if (sectorDropdown && (sectorDropdown.value === 'Professor/Faculty' || sectorDropdown.value === 'Others')) {
-                        field.removeAttribute('required');
-                    } else {
-                        if (!field.hasAttribute('required')) {
-                            field.setAttribute('required', 'required');
-                        }
-                    }
-                }
-                // Default: set required for all visible fields
-                else {
-                    if (!field.hasAttribute('required')) {
-                        field.setAttribute('required', 'required');
-                    }
-                }
-            } else {
-                // Field is hidden, remove required
-                if (field.hasAttribute('required')) {
-                    field.removeAttribute('required');
-                }
-            }
-        });
-    }
-
-    // Run on page load and after a delay to ensure all DOM is ready
-    manageRequiredAttributes();
-    setTimeout(manageRequiredAttributes, 500);
-    setTimeout(manageRequiredAttributes, 1000);
-
-    // Observe DOM changes to handle dynamically shown/hidden fields
-    const observer = new MutationObserver(function(mutations) {
-        let shouldUpdate = false;
-        mutations.forEach(function(mutation) {
-            if (mutation.type === 'attributes' && 
-                (mutation.attributeName === 'style' || mutation.attributeName === 'class')) {
-                shouldUpdate = true;
-            }
-            if (mutation.type === 'childList') {
-                shouldUpdate = true;
-            }
-        });
-        if (shouldUpdate) {
-            setTimeout(manageRequiredAttributes, 100);
-        }
-    });
-
-    // Observe the form for changes
-    const form = document.getElementById('reg_registration_form_1');
-    if (form) {
-        observer.observe(form, {
-            attributes: true,
-            childList: true,
-            subtree: true,
-            attributeFilter: ['style', 'class']
-        });
-    }
-
-    // Also run when specific toggle functions are called
-    // Override common toggle functions to update required attributes
-    const originalShowAttendeeFields = window.showAttendeeFields;
-    if (originalShowAttendeeFields) {
-        window.showAttendeeFields = function() {
-            originalShowAttendeeFields();
-            setTimeout(manageRequiredAttributes, 100);
-        };
-    }
-
-    // Update required attributes when specific fields are toggled
-    document.addEventListener('change', function(e) {
-        // Check if it's a field that might show/hide other fields
-        if (e.target.id === 'sector' || 
-            e.target.id === 'pass_type' || 
-            e.target.id === 'gstDropdown' ||
-            e.target.id === 'exhibition_day' ||
-            e.target.name === 'ieee_member') {
-            setTimeout(manageRequiredAttributes, 100);
-        }
-    });
 });
 </script>
 
