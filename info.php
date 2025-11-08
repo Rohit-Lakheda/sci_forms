@@ -4105,19 +4105,45 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                         input.setAttribute('maxlength', isIndia ? '10' : '15');
                     }
                     
-                    // Update maxlength when country changes
-                    input.addEventListener('countrychange', function() {
-                        updatePhoneMaxLength(input, iti);
-                    });
+                    // Update maxlength and validate when country changes
+                    // Use closure to ensure correct iti reference
+                    (function(inputElement, itiInstance, inputId) {
+                        inputElement.addEventListener('countrychange', function() {
+                            updatePhoneMaxLength(inputElement, itiInstance);
+                            // Validate immediately when country changes if there's a value
+                            if (inputElement.value.trim() !== '') {
+                                validatePhoneNumber(inputElement, itiInstance, inputId, false);
+                            } else {
+                                // Clear any existing errors when country changes and field is empty
+                                hidePhoneError(inputId);
+                            }
+                        });
+                    })(input, iti, input.id);
                     
                     // Set initial maxlength
                     updatePhoneMaxLength(input, iti);
                     
                     // Add dynamic oninput handler to restrict to digits only and respect maxlength
-                    input.addEventListener('input', function() {
-                        var maxLength = parseInt(this.getAttribute('maxlength')) || 15;
-                        this.value = this.value.replace(/\D/g, '').slice(0, maxLength);
-                    });
+                    // Store iti reference in closure for use in event handlers
+                    (function(inputElement, itiInstance, inputId) {
+                        inputElement.addEventListener('input', function() {
+                            var maxLength = parseInt(this.getAttribute('maxlength')) || 15;
+                            var currentValue = this.value.replace(/\D/g, '').slice(0, maxLength);
+                            this.value = currentValue;
+                            
+                            // Real-time validation feedback when user enters enough digits
+                            if (currentValue.length > 0) {
+                                var dialCode = itiInstance.getSelectedCountryData().dialCode;
+                                var isIndia = (dialCode == '91' || dialCode == 91);
+                                
+                                // For India, validate when 10 digits are entered
+                                // For others, validate when at least 5 digits are entered
+                                if ((isIndia && currentValue.length === 10) || (!isIndia && currentValue.length >= 5)) {
+                                    validatePhoneNumber(this, itiInstance, inputId, false);
+                                }
+                            }
+                        });
+                    })(input, iti, input.id);
                     
                     phoneInputs.push({
                         input: input,
