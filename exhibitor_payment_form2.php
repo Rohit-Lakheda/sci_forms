@@ -376,11 +376,11 @@ if (isset($_FILES['ci_certf']['name']) && !empty($_FILES['ci_certf']['name'])) {
 		// Try to set permissions (works on Unix/Linux, may not work on Windows)
 		@chmod($ci_certf_UploadPath, 0777);
 		// Check again after attempting to change permissions
-		if (!is_writable($ci_certf_UploadPath)) {
-			echo "<script language='javascript'>alert('Error: Upload directory is not writable. Please contact administrator to set proper permissions on the photo/ directory.');</script>";
-			echo "<script language='javascript'>window.location='exhibitor_payment_form.php?assoc_nm=$assoc_nm';</script>";
-			exit;
-		}
+		// if (!is_writable($ci_certf_UploadPath)) {
+		// 	echo "<script language='javascript'>alert('Error: Upload directory is not writable. Please contact administrator to set proper permissions on the photo/ directory.');</script>";
+		// 	echo "<script language='javascript'>window.location='exhibitor_payment_form.php?assoc_nm=$assoc_nm';</script>";
+		// 	exit;
+		// }
 	}
 
 	// Sanitize reg_id for use in filename
