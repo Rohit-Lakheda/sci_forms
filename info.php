@@ -811,6 +811,11 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                     } else {
                                                         // Show IEEE section for other pass types or when pass_type doesn't exist
                                                         ieeeSection.style.display = 'block';
+                                                        // Uncheck both radio buttons so no default is selected
+                                                        const yesRadio = document.getElementById('yes1');
+                                                        const noRadio = document.getElementById('no1');
+                                                        if (yesRadio) yesRadio.checked = false;
+                                                        if (noRadio) noRadio.checked = false;
                                                     }
                                                 }
                                             }
@@ -1014,6 +1019,11 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                 } else {
                                                     // Show IEEE section for other pass types
                                                     ieeeSection.style.display = 'block';
+                                                    // Uncheck both radio buttons so no default is selected
+                                                    const yesRadio = document.getElementById('yes1');
+                                                    const noRadio = document.getElementById('no1');
+                                                    if (yesRadio) yesRadio.checked = false;
+                                                    if (noRadio) noRadio.checked = false;
                                                 }
                                             }
                                         }
@@ -1603,6 +1613,11 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                     } else {
                                                         // Show IEEE section for other pass types
                                                         ieeeSection.style.display = 'block';
+                                                        // Uncheck both radio buttons so no default is selected
+                                                        const yesRadioShow = document.getElementById('yes1');
+                                                        const noRadioShow = document.getElementById('no1');
+                                                        if (yesRadioShow) yesRadioShow.checked = false;
+                                                        if (noRadioShow) noRadioShow.checked = false;
                                                     }
                                                 }
                                                 
@@ -1799,7 +1814,7 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                 </div>
                                                 <div class="md-radio del-type-con1">
                                                     <input type="radio" id="no1" name="ieee_member"
-                                                        class="md-radiobtn" value="No" checked onclick="ieeeDiv();">
+                                                        class="md-radiobtn" value="No" onclick="ieeeDiv();">
                                                     <label for="no1">
                                                         <span></span><span class="check"></span><span class="box"></span> No
                                                     </label>
