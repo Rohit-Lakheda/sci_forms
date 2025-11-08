@@ -309,6 +309,12 @@ if ($assoc_nm === '') {
 
 if (isset($_FILES['ci_certf']['name']) && !empty($_FILES['ci_certf']['name'])) {
 
+	$ci_certf_UploadPath = 'photo/';
+	//while uploading file, if path is not wriatable change the permission of the directory to 777
+	if (!is_writable($ci_certf_UploadPath)) {
+		chmod($ci_certf_UploadPath, 0777);
+	}
+
 	// Check for upload errors
 	if ($_FILES['ci_certf']['error'] !== UPLOAD_ERR_OK) {
 		$error_message = 'Unknown upload error';
