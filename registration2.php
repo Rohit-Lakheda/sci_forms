@@ -425,11 +425,11 @@ if ($ret == "retds4fu324rn_ed24d3it") {
 
 // If pass_type is set (workshop, exhibition, or technical), use it as cata
 // Otherwise, use the cata from POST
-if (!empty($pass_type) && ($pass_type == '2-Day Delegate Pass' || $pass_type == 'Exhibition Pass' || $pass_type == 'Technical Program + Workshop + Tutorial + Exhibition')) {
-	$cata = mysqli_real_escape_string($link, $pass_type);
-} else {
+// if (!empty($pass_type) && ($pass_type == '2-Day Delegate Pass')) {
+// 	$cata = mysqli_real_escape_string($link, $pass_type);
+// } else {
 	$cata = @mysqli_real_escape_string($link, $_POST['cata']);
-}
+// }
 $org_reg_type = htmlspecialchars($_POST['org_reg_type'], ENT_QUOTES, 'UTF-8');
 
 

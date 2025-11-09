@@ -737,6 +737,8 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                 <label class="control-label">Please specify :</label>
                                                 <input type="text" id="other-sector-input" name="other-sector-input"
                                                     class="form-control"
+                                                    minlength="1"
+                                                    maxlength="50"
                                                     value="<?php echo isset($_SESSION['other-sector-input']) ? htmlspecialchars($_SESSION['other-sector-input']) : ''; ?>">
                                             </div>
                                         </div>
@@ -752,12 +754,65 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                             if (sectorDropdown.value === 'Others') {
                                                 otherSectorDiv.style.display = 'block';
                                                 otherSectorInput.required = true;
+                                                // Validate if there's already a value
+                                                if (otherSectorInput.value.trim()) {
+                                                    if (typeof validateOtherSector === 'function') {
+                                                        validateOtherSector('other-sector-input');
+                                                    }
+                                                }
                                             } else {
                                                 otherSectorDiv.style.display = 'none';
                                                 otherSectorInput.required = false;
                                                 otherSectorInput.value = ''; // Clear the input when hidden
+                                                // Hide any error messages
+                                                if (typeof hideError === 'function') {
+                                                    hideError('other-sector-input');
+                                                }
                                             }
                                         }
+
+                                        function toggleOtherTitleInput(attendeeNumber) {
+                                            const titleDropdown = document.getElementById('title' + attendeeNumber);
+                                            const otherTitleDiv = document.getElementById('other-title' + attendeeNumber);
+                                            const otherTitleInput = document.getElementById('other-title-input' + attendeeNumber);
+
+                                            if (titleDropdown && titleDropdown.value === 'Others') {
+                                                if (otherTitleDiv) {
+                                                    otherTitleDiv.style.display = 'block';
+                                                }
+                                                if (otherTitleInput) {
+                                                    otherTitleInput.required = true;
+                                                    // Validate if there's already a value
+                                                    if (otherTitleInput.value.trim()) {
+                                                        if (typeof validateOtherTitle === 'function') {
+                                                            validateOtherTitle('other-title-input' + attendeeNumber);
+                                                        }
+                                                    }
+                                                }
+                                            } else {
+                                                if (otherTitleDiv) {
+                                                    otherTitleDiv.style.display = 'none';
+                                                }
+                                                if (otherTitleInput) {
+                                                    otherTitleInput.required = false;
+                                                    otherTitleInput.value = ''; // Clear the input when hidden
+                                                    // Hide any error messages
+                                                    if (typeof hideError === 'function') {
+                                                        hideError('other-title-input' + attendeeNumber);
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        // Initialize other title inputs on page load
+                                        document.addEventListener('DOMContentLoaded', function() {
+                                            for (let i = 1; i <= 7; i++) {
+                                                const titleDropdown = document.getElementById('title' + i);
+                                                if (titleDropdown && titleDropdown.value === 'Others') {
+                                                    toggleOtherTitleInput(i);
+                                                }
+                                            }
+                                        });
                                     </script>
 
 
@@ -1831,10 +1886,10 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                          <div class="col-md-6">
                                             <input type="text" class="form-control" name="ieee_member_number" id="ieee_member_number"
                                                 value="<?php echo (isset($_SESSION['ieee_member_number']) ? htmlspecialchars($_SESSION['ieee_member_number']) : ''); ?>"
-                                                required="required" minlength="6" maxlength="8" 
-                                                title="Enter exactly 8 alphanumeric characters (letters and digits only)"
-                                                oninput="this.value = this.value.replace(/[^A-Za-z0-9]/g,'').slice(0,8);" />
-                                            <div id="ieee_member_number_error" style="color:red; display:none; font-size:12px;">Please enter exactly 8 alphanumeric characters.</div>
+                                                required="required" minlength="6" maxlength="9" 
+                                                title="Enter exactly 8 numeric characters"
+                                                oninput="this.value = this.value.replace(/[^0-9]/g,'').slice(0,9);" />
+                                            <div id="ieee_member_number_error" style="color:red; display:none; font-size:12px;">Please enter exactly 8 numeric characters.</div>
                                         </div>
                                         <div class="col-md-12" style="margin-top: 10px;">
                                             <div class="alert alert-warning" style="font-size: 1.2rem;">
@@ -2527,15 +2582,23 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                 *
                                             </span></label>
                                         <div class="col-md-6">
-                                            <select id="title1" name="title1" class="form-control">
+                                            <select id="title1" name="title1" class="form-control" required onchange="toggleOtherTitleInput(1)">
                                                 <option value="">Select Title</option>
                                                 <option value="Mr." <?php echo (isset($attendees[0]['title']) && $attendees[0]['title'] == 'Mr.') ? 'selected' : ''; ?>>Mr. </option>
                                                 <option value="Mrs." <?php echo (isset($attendees[0]['title']) && $attendees[0]['title'] == 'Mrs.') ? 'selected' : ''; ?>> Mrs.</option>
                                                 <option value="Ms." <?php echo (isset($attendees[0]['title']) && $attendees[0]['title'] == 'Ms.') ? 'selected' : ''; ?>>Ms. </option>
                                                 <option value="Dr." <?php echo (isset($attendees[0]['title']) && $attendees[0]['title'] == 'Dr.') ? 'selected' : ''; ?>>Dr. </option>
                                                 <option value="Prof." <?php echo (isset($attendees[0]['title']) && $attendees[0]['title'] == 'Prof.') ? 'selected' : ''; ?>>Prof. </option>
-                                                </option>
+                                                <option value="Others" <?php echo (isset($attendees[0]['title']) && !in_array($attendees[0]['title'], ['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.'])) ? 'selected' : ''; ?>>Others</option>
                                             </select>
+                                            <div id="other-title1" style="display:none; margin-top: 10px;">
+                                                <label class="control-label">Please specify :</label>
+                                                <input type="text" id="other-title-input1" name="title1"
+                                                    class="form-control"
+                                                    minlength="1"
+                                                    maxlength="10"
+                                                    value="<?php echo (isset($attendees[0]['title']) && !in_array($attendees[0]['title'], ['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.', 'Others'])) ? htmlspecialchars($attendees[0]['title']) : ''; ?>">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -2905,7 +2968,7 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                 *
                                             </span></label>
                                         <div class="col-md-6">
-                                            <select id="title2" name="title2" class="form-control">
+                                            <select id="title2" name="title2" class="form-control" onchange="toggleOtherTitleInput(2)">
                                                 <option value="">Select Title</option>
                                                 <option value="Mr." <?php echo (isset($attendees[1]['title']) && $attendees[1]['title'] == 'Mr.') ? 'selected' : ''; ?>>Mr. </option>
                                                 <option value="Mrs." <?php echo (isset($attendees[1]['title']) && $attendees[1]['title'] == 'Mrs.') ? 'selected' : ''; ?>> Mrs.
@@ -2914,7 +2977,16 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                 <option value="Dr." <?php echo (isset($attendees[1]['title']) && $attendees[1]['title'] == 'Dr.') ? 'selected' : ''; ?>>Dr. </option>
                                                 <option value="Mx." <?php echo (isset($attendees[1]['title']) && $attendees[1]['title'] == 'Mx.') ? 'selected' : ''; ?>>Mx.
                                                 </option>
+                                                <option value="Others" <?php echo (isset($attendees[1]['title']) && !in_array($attendees[1]['title'], ['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Mx.'])) ? 'selected' : ''; ?>>Others</option>
                                             </select>
+                                            <div id="other-title2" style="display:none; margin-top: 10px;">
+                                                <label class="control-label">Please specify :</label>
+                                                <input type="text" id="other-title-input2" name="title2"
+                                                    class="form-control"
+                                                    minlength="1"
+                                                    maxlength="10"
+                                                    value="<?php echo (isset($attendees[1]['title']) && !in_array($attendees[1]['title'], ['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Mx.', 'Others'])) ? htmlspecialchars($attendees[1]['title']) : ''; ?>">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -3000,7 +3072,7 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                 *
                                             </span></label>
                                         <div class="col-md-6">
-                                            <select id="title3" name="title3" class="form-control">
+                                            <select id="title3" name="title3" class="form-control" onchange="toggleOtherTitleInput(3)">
                                                 <option value="">Select Title</option>
                                                 <option value="Mr." <?php echo (isset($attendees[2]['title']) && $attendees[2]['title'] == 'Mr.') ? 'selected' : ''; ?>>Mr.
                                                 </option>
@@ -3014,7 +3086,16 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                 <option value="Mx." <?php echo (isset($attendees[2]['title']) && $attendees[2]['title'] == 'Mx.') ? 'selected' : ''; ?>>
                                                     Mx.
                                                 </option>
+                                                <option value="Others" <?php echo (isset($attendees[2]['title']) && !in_array($attendees[2]['title'], ['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Mx.'])) ? 'selected' : ''; ?>>Others</option>
                                             </select>
+                                            <div id="other-title3" style="display:none; margin-top: 10px;">
+                                                <label class="control-label">Please specify :</label>
+                                                <input type="text" id="other-title-input3" name="title3"
+                                                    class="form-control"
+                                                    minlength="1"
+                                                    maxlength="10"
+                                                    value="<?php echo (isset($attendees[2]['title']) && !in_array($attendees[2]['title'], ['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Mx.', 'Others'])) ? htmlspecialchars($attendees[2]['title']) : ''; ?>">
+                                            </div>
                                         </div>
                                     </div>
 
@@ -3100,7 +3181,7 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                 *
                                             </span></label>
                                         <div class="col-md-6">
-                                            <select id="title4" name="title4" class="form-control">
+                                            <select id="title4" name="title4" class="form-control" onchange="toggleOtherTitleInput(4)">
                                                 <option value="">Select Title</option>
                                                 <option value="Mr." <?php echo (isset($attendees[3]['title']) && $attendees[3]['title'] == 'Mr.') ? 'selected' : ''; ?>>Mr.
                                                 </option>
@@ -3113,7 +3194,16 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                 <option value="Mx." <?php echo (isset($attendees[3]['title']) && $attendees[3]['title'] == 'Mx.') ? 'selected' : ''; ?>>
                                                     Mx.
                                                 </option>
+                                                <option value="Others" <?php echo (isset($attendees[3]['title']) && !in_array($attendees[3]['title'], ['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Mx.'])) ? 'selected' : ''; ?>>Others</option>
                                             </select>
+                                            <div id="other-title4" style="display:none; margin-top: 10px;">
+                                                <label class="control-label">Please specify :</label>
+                                                <input type="text" id="other-title-input4" name="title4"
+                                                    class="form-control"
+                                                    minlength="1"
+                                                    maxlength="10"
+                                                    value="<?php echo (isset($attendees[3]['title']) && !in_array($attendees[3]['title'], ['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Mx.', 'Others'])) ? htmlspecialchars($attendees[3]['title']) : ''; ?>">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -3196,7 +3286,7 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                 *
                                             </span></label>
                                         <div class="col-md-6">
-                                            <select id="title5" name="title5" class="form-control">
+                                            <select id="title5" name="title5" class="form-control" onchange="toggleOtherTitleInput(5)">
                                                 <option value="">Select Title</option>
                                                 <option value="Mr." <?php echo (isset($attendees[4]['title']) && $attendees[4]['title'] == 'Mr.') ? 'selected' : ''; ?>>Mr.
                                                 </option>
@@ -3210,7 +3300,16 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                 <option value="Mx." <?php echo (isset($attendees[4]['title']) && $attendees[4]['title'] == 'Mx.') ? 'selected' : ''; ?>>
                                                     Mx.
                                                 </option>
+                                                <option value="Others" <?php echo (isset($attendees[4]['title']) && !in_array($attendees[4]['title'], ['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Mx.'])) ? 'selected' : ''; ?>>Others</option>
                                             </select>
+                                            <div id="other-title5" style="display:none; margin-top: 10px;">
+                                                <label class="control-label">Please specify :</label>
+                                                <input type="text" id="other-title-input5" name="title5"
+                                                    class="form-control"
+                                                    minlength="1"
+                                                    maxlength="10"
+                                                    value="<?php echo (isset($attendees[4]['title']) && !in_array($attendees[4]['title'], ['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Mx.', 'Others'])) ? htmlspecialchars($attendees[4]['title']) : ''; ?>">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -3290,7 +3389,7 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                 *
                                             </span></label>
                                         <div class="col-md-6">
-                                            <select id="title6" name="title6" class="form-control">
+                                            <select id="title6" name="title6" class="form-control" onchange="toggleOtherTitleInput(6)">
                                                 <option value="">Select Title</option>
                                                 <option value="Mr." <?php echo (isset($attendees[5]['title']) && $attendees[5]['title'] == 'Mr.') ? 'selected' : ''; ?>>Mr.
                                                 </option>
@@ -3304,7 +3403,16 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                 <option value="Mx." <?php echo (isset($attendees[5]['title']) && $attendees[5]['title'] == 'Mx.') ? 'selected' : ''; ?>>
                                                     Mx.
                                                 </option>
+                                                <option value="Others" <?php echo (isset($attendees[5]['title']) && !in_array($attendees[5]['title'], ['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Mx.'])) ? 'selected' : ''; ?>>Others</option>
                                             </select>
+                                            <div id="other-title6" style="display:none; margin-top: 10px;">
+                                                <label class="control-label">Please specify :</label>
+                                                <input type="text" id="other-title-input6" name="title6"
+                                                    class="form-control"
+                                                    minlength="1"
+                                                    maxlength="10"
+                                                    value="<?php echo (isset($attendees[5]['title']) && !in_array($attendees[5]['title'], ['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Mx.', 'Others'])) ? htmlspecialchars($attendees[5]['title']) : ''; ?>">
+                                            </div>
                                         </div>
                                     </div>
 
@@ -3392,7 +3500,7 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                 *
                                             </span></label>
                                         <div class="col-md-6">
-                                            <select id="title7" name="title7" class="form-control">
+                                            <select id="title7" name="title7" class="form-control" onchange="toggleOtherTitleInput(7)">
                                                 <option value="">Select Title</option>
                                                 <option value="Mr." <?php echo (isset($attendees[6]['title']) && $attendees[6]['title'] == 'Mr.') ? 'selected' : ''; ?>>Mr.
                                                 </option>
@@ -3406,7 +3514,16 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                 <option value="Mx." <?php echo (isset($attendees[6]['title']) && $attendees[6]['title'] == 'Mx.') ? 'selected' : ''; ?>>
                                                     Mx.
                                                 </option>
+                                                <option value="Others" <?php echo (isset($attendees[6]['title']) && !in_array($attendees[6]['title'], ['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Mx.'])) ? 'selected' : ''; ?>>Others</option>
                                             </select>
+                                            <div id="other-title7" style="display:none; margin-top: 10px;">
+                                                <label class="control-label">Please specify :</label>
+                                                <input type="text" id="other-title-input7" name="title7"
+                                                    class="form-control"
+                                                    minlength="1"
+                                                    maxlength="10"
+                                                    value="<?php echo (isset($attendees[6]['title']) && !in_array($attendees[6]['title'], ['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Mx.', 'Others'])) ? htmlspecialchars($attendees[6]['title']) : ''; ?>">
+                                            </div>
                                         </div>
                                     </div>
 
@@ -5065,6 +5182,112 @@ document.addEventListener('DOMContentLoaded', function() {
         return true;
     }
 
+    function validateOtherSector(inputId) {
+        const input = document.getElementById(inputId);
+        if (!input) return true;
+        
+        // Only validate if the field is visible and required
+        const otherSectorDiv = document.getElementById('other-sector');
+        if (!otherSectorDiv || otherSectorDiv.style.display === 'none') {
+            hideError(inputId);
+            return true;
+        }
+        
+        const value = input.value.trim();
+        if (!value) {
+            if (input.required) {
+                showError(inputId, 'Please specify the domain.');
+                return false;
+            }
+            return true;
+        }
+
+        if (value.length < 1) {
+            showError(inputId, 'Domain specification must be at least 1 character long.');
+            return false;
+        }
+
+        if (value.length > 50) {
+            showError(inputId, 'Domain specification must not exceed 50 characters.');
+            return false;
+        }
+
+        hideError(inputId);
+        return true;
+    }
+
+    function validateTitle(inputId, fieldName) {
+        const input = document.getElementById(inputId);
+        if (!input) return true;
+        
+        // Only validate if the field is visible
+        if (input.offsetParent === null) {
+            hideError(inputId);
+            return true;
+        }
+        
+        const value = input.value.trim();
+        if (!value || value === '') {
+            if (input.required) {
+                showError(inputId, fieldName + ' is required.');
+                return false;
+            }
+            return true;
+        }
+
+        // Valid title values (including "Others")
+        const validTitles = ['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.', 'Mx.', 'Others'];
+        if (!validTitles.includes(value)) {
+            showError(inputId, 'Please select a valid title.');
+            return false;
+        }
+
+        // If "Others" is selected, validate the other-title-input field
+        if (value === 'Others') {
+            const attendeeNumber = inputId.replace('title', '');
+            const otherTitleInputId = 'other-title-input' + attendeeNumber;
+            return validateOtherTitle(otherTitleInputId);
+        }
+
+        hideError(inputId);
+        return true;
+    }
+
+    function validateOtherTitle(inputId) {
+        const input = document.getElementById(inputId);
+        if (!input) return true;
+        
+        // Only validate if the field is visible
+        const attendeeNumber = inputId.replace('other-title-input', '');
+        const otherTitleDiv = document.getElementById('other-title' + attendeeNumber);
+        if (!otherTitleDiv || otherTitleDiv.style.display === 'none') {
+            hideError(inputId);
+            return true;
+        }
+        
+        const value = input.value.trim();
+        if (!value) {
+            if (input.required) {
+                showError(inputId, 'Please specify the title.');
+                return false;
+            }
+            return true;
+        }
+
+        if (value.length < 1) {
+            showError(inputId, 'Title must be at least 1 character long.');
+            return false;
+        }
+
+        if (value.length > 10) {
+            showError(inputId, 'Title must not exceed 10 characters.');
+            return false;
+        }
+
+        hideError(inputId);
+        return true;
+    }
+
     function validateEmail(inputId, fieldName) {
         const input = document.getElementById(inputId);
         if (!input) return true;
@@ -5084,7 +5307,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
         }
 
-        if (value.length > 100) {
+        if (value.length > 32) {
             showError(inputId, 'Email must not exceed 100 characters.');
             return false;
         }
@@ -5374,6 +5597,51 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Validate other sector input
+    const otherSectorInput = document.getElementById('other-sector-input');
+    if (otherSectorInput) {
+        otherSectorInput.addEventListener('blur', function() {
+            validateOtherSector('other-sector-input');
+        });
+        otherSectorInput.addEventListener('input', function() {
+            if (this.value.trim()) {
+                validateOtherSector('other-sector-input');
+            } else {
+                hideError('other-sector-input');
+            }
+        });
+    }
+
+    // Validate title fields (title1 through title7)
+    for (let i = 1; i <= 7; i++) {
+        const titleId = 'title' + i;
+        const titleInput = document.getElementById(titleId);
+        if (titleInput) {
+            titleInput.addEventListener('change', function() {
+                validateTitle(titleId, 'Title');
+            });
+            titleInput.addEventListener('blur', function() {
+                validateTitle(titleId, 'Title');
+            });
+        }
+
+        // Validate other-title-input fields
+        const otherTitleInputId = 'other-title-input' + i;
+        const otherTitleInput = document.getElementById(otherTitleInputId);
+        if (otherTitleInput) {
+            otherTitleInput.addEventListener('blur', function() {
+                validateOtherTitle(otherTitleInputId);
+            });
+            otherTitleInput.addEventListener('input', function() {
+                if (this.value.trim()) {
+                    validateOtherTitle(otherTitleInputId);
+                } else {
+                    hideError(otherTitleInputId);
+                }
+            });
+        }
+    }
+
     // Form submission validation
     const form = document.getElementById('reg_registration_form_1');
     if (form) {
@@ -5382,10 +5650,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Validate all visible name fields
             for (let i = 1; i <= 7; i++) {
+                const titleId = 'title' + i;
                 const firstNameId = 'firstname' + i;
                 const lastNameId = 'lastname' + i;
                 const firstNameInput = document.getElementById(firstNameId);
                 const lastNameInput = document.getElementById(lastNameId);
+                const titleInput = document.getElementById(titleId);
+                if (titleInput && titleInput.offsetParent !== null) {
+                    if (!validateTitle(titleId, 'Title')) {
+                        isValid = false;
+                    }
+                }
                 
                 if (firstNameInput && firstNameInput.offsetParent !== null) {
                     if (!validateName(firstNameId, 'First name')) {
@@ -5398,6 +5673,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
             }
+
+            // Validate all visible title fields
+           
 
             // Validate organization
             if (orgInput && orgInput.offsetParent !== null) {
@@ -5485,6 +5763,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
 
+            // Validate other sector input if visible
+            if (otherSectorInput && otherSectorInput.offsetParent !== null) {
+                if (!validateOtherSector('other-sector-input')) {
+                    isValid = false;
+                }
+            }
+
             if (!isValid) {
                 e.preventDefault();
                 alert('Please correct the errors in the form before submitting.');
@@ -5494,6 +5779,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
                 return false;
+            }
+
+            // Update title values if "Others" is selected - replace with custom title
+            // This happens only after validation passes
+            for (let i = 1; i <= 7; i++) {
+                const titleSelect = document.getElementById('title' + i);
+                const otherTitleInput = document.getElementById('other-title-input' + i);
+                if (titleSelect && titleSelect.value === 'Others' && otherTitleInput && otherTitleInput.value.trim()) {
+                    // Update the select value to the custom title for form submission
+                    const customTitle = otherTitleInput.value.trim();
+                    titleSelect.value = customTitle;
+                }
             }
         });
     }
