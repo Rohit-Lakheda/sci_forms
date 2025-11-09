@@ -425,23 +425,18 @@ if ($ret == "retds4fu324rn_ed24d3it") {
 
 // If pass_type is set (workshop, exhibition, or technical), use it as cata
 // Otherwise, use the cata from POST
+<<<<<<< HEAD
 if (!empty($pass_type) && ($pass_type == '2-Day Delegate Pass' || $pass_type == 'Exhibition Pass' || $pass_type == 'All Days Delegate Pass')) {
 	$cata = mysqli_real_escape_string($link, $pass_type);
 } else {
+=======
+// if (!empty($pass_type) && ($pass_type == '2-Day Delegate Pass')) {
+// 	$cata = mysqli_real_escape_string($link, $pass_type);
+// } else {
+>>>>>>> 02ca0cbe44c163382b5e94acbacbb7b5ee18261d
 	$cata = @mysqli_real_escape_string($link, $_POST['cata']);
-}
-$org_reg_type = htmlspecialchars($_POST['org_reg_type'], ENT_QUOTES, 'UTF-8');
-
-// if ($org_reg_type == 'Investors' || $org_reg_type == 'Institutional Investor') {
-// 	if ($cata == 'Gold Delegate Pass') {
-// 		$cata = 'Investor Gold Pass';
-// 	} else if ($cata == 'Silver Delegate Pass') {
-// 		$cata = 'Investor Silver Pass';
-// 	} else if ($cata == 'Bronze Delegate Pass') {
-// 		$cata = 'Investor Bronze Pass';
-// 	}
 // }
-
+$org_reg_type = htmlspecialchars($_POST['org_reg_type'], ENT_QUOTES, 'UTF-8');
 
 
 // if dele != next gen hpc experience and dele != author then days must be day1 or day2 else day day2 day3 day4

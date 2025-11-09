@@ -637,9 +637,37 @@ $category = '-';
                           $kit_amount = isset($qr_gt_user_data_ans_row['kit']) ? (float)$qr_gt_user_data_ans_row['kit'] : 0;
                           $selection_amt = isset($qr_gt_user_data_ans_row['selection_amt']) ? (float)$qr_gt_user_data_ans_row['selection_amt'] : 0;
                           $base_selection_amt = max(0, $selection_amt - $food_amount - $kit_amount); // Ensure non-negative
+
+                          // we have to calculate the number of pages 
+                          // Calculate extra page charges for "Author" category if applicable
+                          $pagesNumber = isset($qr_gt_user_data_ans_row['pagesNumber']) ? (int)$qr_gt_user_data_ans_row['pagesNumber'] : 0;
+                          $isAuthor = isset($qr_gt_user_data_ans_row['cata']) && $qr_gt_user_data_ans_row['cata'] === "Author";
+                          $extraPages = 0;
+                          $extraCharge = 0;
+                          $extraPerPage = 0;
+                          if ($isAuthor && $pagesNumber > 8) {
+                            $maxExtraPages = max(0, min($pagesNumber, 11) - 8);
+                            $extraPages = $maxExtraPages;
+                            $currency = isset($qr_gt_user_data_ans_row['curr']) ? $qr_gt_user_data_ans_row['curr'] : '';
+                            // 17652 for Indian, 200 for Foreign (as per registration6.php)
+                            $extraPerPage = ($currency === "Indian") ? 17652 : 200;
+                            $extraCharge = $extraPages * $extraPerPage;
+                          }
                           ?>
                           
                           <div class="row static-info align-reverse">
+
+                          <?php if ($isAuthor && $pagesNumber > 8) { ?>
+                            <div class="row static-info align-reverse">
+                              <div class="col-md-8 name">
+                                Extra Page Charges:
+                              </div>
+                              <div class="col-md-4 value">
+                                <?php echo $qr_gt_user_data_ans_row['amt_ext'] . ' ' . number_format($extraCharge, 2); ?>
+                              </div>
+                            </div>
+                            <?php } ?>
+                            
                             <div class="col-md-8 name">
                               Base Selection Amount:
                             </div>
