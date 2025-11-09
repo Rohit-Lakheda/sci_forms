@@ -771,7 +771,7 @@ $attendeesData = isset($_SESSION['attendee']) ? $_SESSION['attendee'] : [];
                                                     <option value="">-- Select Pass Type --</option>
                                                     <option value="workshop">2-Day Delegate Pass</option>
                                                     <option value="exhibition">Exhibition Pass</option>
-                                                    <option value="technical">Technical Program + Workshop + Tutorial + Exhibition</option>
+                                                    <option value="technical">All Days Delegate Pass</option>
                                                 </select>
                                             </div>
                                         </div>
