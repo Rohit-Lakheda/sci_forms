@@ -131,7 +131,7 @@ function getCustomRate1($category, $today, $early_date, $standard_date)
     $rates = [
         "Author" => [
             "Early Bird" => ["Indian" => 30000, "Foreign" => 350],
-            "Regular"    => ["Indian" => 35000, "Foreign" => 400],
+            "Regular"    => ["Indian" => 30000, "Foreign" => 350],
         ],
     ];
     // Determine rate type
@@ -171,11 +171,11 @@ function getCustomRate($category, $combo, $today, $early_date, $standard_date)
                 "On-site"   => ["Indian" => 14000, "Foreign" => 156],
             ],
             "Exhibition Pass" => [
-                "Early Bird" => ["Indian" => 3000, "Foreign" => 78],
+                "Early Bird" => ["Indian" => 3000, "Foreign" => 40],
                 "Regular"    => ["Indian" => 5000, "Foreign" => 100],
                 "On-site"    => ["Indian" => 11000, "Foreign" => 122],
             ],
-            "Technical Program + Workshop + Tutorial + Exhibition" => [
+            "All Days Delegate Pass" => [
                 "Early Bird" => ["Indian" => 35000, "Foreign" => 389],
                 "Regular"    => ["Indian" => 44000, "Foreign" => 489],
                 "On-site"    => ["Indian" => 52000, "Foreign" => 578],
@@ -183,16 +183,16 @@ function getCustomRate($category, $combo, $today, $early_date, $standard_date)
         ],
         "Government" => [
             "2-Day Delegate Pass" => [
-                "Early Bird" => ["Indian" => 7200, "Foreign" => 82],
-                "Regular"    => ["Indian" => 8800, "Foreign" => 100],
-                "On-site"    => ["Indian" => 11200, "Foreign" => 127],
+                "Early Bird" => ["Indian" => 9000, "Foreign" => 80],
+                "Regular"    => ["Indian" => 11000, "Foreign" => 98],
+                "On-site"    => ["Indian" => 14000, "Foreign" => 124],
             ],
             "Exhibition Pass" => [
                 "Early Bird" => ["Indian" => 3000, "Foreign" => 64],
                 "Regular"    => ["Indian" => 5000, "Foreign" => 82],
-                "On-site"    => ["Indian" => 8800, "Foreign" => 100],
+                "On-site"    => ["Indian" => 1100, "Foreign" => 100],
             ],
-            "Technical Program + Workshop + Tutorial + Exhibition" => [
+            "All Days Delegate Pass" => [
                 "Early Bird" => ["Indian" => 28000, "Foreign" => 318],
                 "Regular"    => ["Indian" => 35000, "Foreign" => 400],
                 "On-site"    => ["Indian" => 41600, "Foreign" => 473],
@@ -200,16 +200,16 @@ function getCustomRate($category, $combo, $today, $early_date, $standard_date)
         ],
         "Academia" => [
             "2-Day Delegate Pass" => [
-                "Early Bird" => ["Indian" => 5760, "Foreign" => 64],
-                "Regular"    => ["Indian" => 7040, "Foreign" => 78],
-                "On-site"    => ["Indian" => 8960, "Foreign" => 100],
+                "Early Bird" => ["Indian" => 9000, "Foreign" => 64],
+                "Regular"    => ["Indian" => 11000, "Foreign" => 78],
+                "On-site"    => ["Indian" => 14000, "Foreign" => 100],
             ],
             "Exhibition Pass" => [
-                "Early Bird" => ["Indian" => 3000, "Foreign" => 50],
+                "Early Bird" => ["Indian" => 3000, "Foreign" => 40],
                 "Regular"    => ["Indian" => 5000, "Foreign" => 64],
-                "On-site"    => ["Indian" => 7040, "Foreign" => 78],
+                "On-site"    => ["Indian" => 11000, "Foreign" => 78],
             ],
-            "Technical Program + Workshop + Tutorial + Exhibition" => [
+            "All Days Delegate Pass" => [
                 "Early Bird" => ["Indian" => 22400, "Foreign" => 249],
                 "Regular"    => ["Indian" => 28160, "Foreign" => 313],
                 "On-site"    => ["Indian" => 33280, "Foreign" => 370],
@@ -218,7 +218,7 @@ function getCustomRate($category, $combo, $today, $early_date, $standard_date)
 
         "Author" => [
             "Early Bird" => ["Indian" => 30000, "Foreign" => 350],
-            "Regular"    => ["Indian" => 35000, "Foreign" => 400],
+            "Regular"    => ["Indian" => 30000, "Foreign" => 350],
         ],
        
     ];

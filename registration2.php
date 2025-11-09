@@ -160,7 +160,7 @@ if ($cata !== 'Next Gen HPC Experience' && $cata !== 'Author') {
 	}
 
 	if ($_POST['pass_type'] === 'technical') {
-		$pass_type = 'Technical Program + Workshop + Tutorial + Exhibition';
+		$pass_type = 'All Days Delegate Pass';
 	} elseif ($_POST['pass_type'] === 'exhibition') {
 		$pass_type = 'Exhibition Pass';
 	} elseif ($_POST['pass_type'] === 'workshop') {
@@ -425,7 +425,7 @@ if ($ret == "retds4fu324rn_ed24d3it") {
 
 // If pass_type is set (workshop, exhibition, or technical), use it as cata
 // Otherwise, use the cata from POST
-if (!empty($pass_type) && ($pass_type == '2-Day Delegate Pass' || $pass_type == 'Exhibition Pass' || $pass_type == 'Technical Program + Workshop + Tutorial + Exhibition')) {
+if (!empty($pass_type) && ($pass_type == '2-Day Delegate Pass' || $pass_type == 'Exhibition Pass' || $pass_type == 'All Days Delegate Pass')) {
 	$cata = mysqli_real_escape_string($link, $pass_type);
 } else {
 	$cata = @mysqli_real_escape_string($link, $_POST['cata']);
@@ -446,7 +446,7 @@ $org_reg_type = htmlspecialchars($_POST['org_reg_type'], ENT_QUOTES, 'UTF-8');
 
 // if dele != next gen hpc experience and dele != author then days must be day1 or day2 else day day2 day3 day4
 // Skip validation if pass_type is Technical Program + Workshop + Tutorial + Exhibition
-if ($pass_type != 'Technical Program + Workshop + Tutorial + Exhibition' && $del != 'author') {
+if ($pass_type != 'All Days Delegate Pass' && $del != 'author') {
 	// Check if days is empty
 	if (empty($days)) {
 		echo "<script language='javascript'>alert('For selected delegate type, please select Day.');</script>";
